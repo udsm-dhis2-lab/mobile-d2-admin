@@ -221,16 +221,19 @@ class $InstancesTable extends Instances
 
 class InstancesPingStatus extends DataClass
     implements Insertable<InstancesPingStatus> {
+  final int id;
   final int instanceId;
   final String statusCode;
   final DateTime pingTime;
   const InstancesPingStatus(
-      {required this.instanceId,
+      {required this.id,
+      required this.instanceId,
       required this.statusCode,
       required this.pingTime});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
     map['instance_id'] = Variable<int>(instanceId);
     map['status_code'] = Variable<String>(statusCode);
     map['ping_time'] = Variable<DateTime>(pingTime);
@@ -239,6 +242,7 @@ class InstancesPingStatus extends DataClass
 
   InstancesPingStatusesCompanion toCompanion(bool nullToAbsent) {
     return InstancesPingStatusesCompanion(
+      id: Value(id),
       instanceId: Value(instanceId),
       statusCode: Value(statusCode),
       pingTime: Value(pingTime),
@@ -249,6 +253,7 @@ class InstancesPingStatus extends DataClass
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return InstancesPingStatus(
+      id: serializer.fromJson<int>(json['id']),
       instanceId: serializer.fromJson<int>(json['instanceId']),
       statusCode: serializer.fromJson<String>(json['statusCode']),
       pingTime: serializer.fromJson<DateTime>(json['pingTime']),
@@ -258,6 +263,7 @@ class InstancesPingStatus extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
       'instanceId': serializer.toJson<int>(instanceId),
       'statusCode': serializer.toJson<String>(statusCode),
       'pingTime': serializer.toJson<DateTime>(pingTime),
@@ -265,8 +271,9 @@ class InstancesPingStatus extends DataClass
   }
 
   InstancesPingStatus copyWith(
-          {int? instanceId, String? statusCode, DateTime? pingTime}) =>
+          {int? id, int? instanceId, String? statusCode, DateTime? pingTime}) =>
       InstancesPingStatus(
+        id: id ?? this.id,
         instanceId: instanceId ?? this.instanceId,
         statusCode: statusCode ?? this.statusCode,
         pingTime: pingTime ?? this.pingTime,
@@ -274,6 +281,7 @@ class InstancesPingStatus extends DataClass
   @override
   String toString() {
     return (StringBuffer('InstancesPingStatus(')
+          ..write('id: $id, ')
           ..write('instanceId: $instanceId, ')
           ..write('statusCode: $statusCode, ')
           ..write('pingTime: $pingTime')
@@ -282,11 +290,12 @@ class InstancesPingStatus extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(instanceId, statusCode, pingTime);
+  int get hashCode => Object.hash(id, instanceId, statusCode, pingTime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is InstancesPingStatus &&
+          other.id == this.id &&
           other.instanceId == this.instanceId &&
           other.statusCode == this.statusCode &&
           other.pingTime == this.pingTime);
@@ -294,15 +303,18 @@ class InstancesPingStatus extends DataClass
 
 class InstancesPingStatusesCompanion
     extends UpdateCompanion<InstancesPingStatus> {
+  final Value<int> id;
   final Value<int> instanceId;
   final Value<String> statusCode;
   final Value<DateTime> pingTime;
   const InstancesPingStatusesCompanion({
+    this.id = const Value.absent(),
     this.instanceId = const Value.absent(),
     this.statusCode = const Value.absent(),
     this.pingTime = const Value.absent(),
   });
   InstancesPingStatusesCompanion.insert({
+    this.id = const Value.absent(),
     required int instanceId,
     required String statusCode,
     required DateTime pingTime,
@@ -310,11 +322,13 @@ class InstancesPingStatusesCompanion
         statusCode = Value(statusCode),
         pingTime = Value(pingTime);
   static Insertable<InstancesPingStatus> custom({
+    Expression<int>? id,
     Expression<int>? instanceId,
     Expression<String>? statusCode,
     Expression<DateTime>? pingTime,
   }) {
     return RawValuesInsertable({
+      if (id != null) 'id': id,
       if (instanceId != null) 'instance_id': instanceId,
       if (statusCode != null) 'status_code': statusCode,
       if (pingTime != null) 'ping_time': pingTime,
@@ -322,10 +336,12 @@ class InstancesPingStatusesCompanion
   }
 
   InstancesPingStatusesCompanion copyWith(
-      {Value<int>? instanceId,
+      {Value<int>? id,
+      Value<int>? instanceId,
       Value<String>? statusCode,
       Value<DateTime>? pingTime}) {
     return InstancesPingStatusesCompanion(
+      id: id ?? this.id,
       instanceId: instanceId ?? this.instanceId,
       statusCode: statusCode ?? this.statusCode,
       pingTime: pingTime ?? this.pingTime,
@@ -335,6 +351,9 @@ class InstancesPingStatusesCompanion
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
     if (instanceId.present) {
       map['instance_id'] = Variable<int>(instanceId.value);
     }
@@ -350,6 +369,7 @@ class InstancesPingStatusesCompanion
   @override
   String toString() {
     return (StringBuffer('InstancesPingStatusesCompanion(')
+          ..write('id: $id, ')
           ..write('instanceId: $instanceId, ')
           ..write('statusCode: $statusCode, ')
           ..write('pingTime: $pingTime')
@@ -364,6 +384,15 @@ class $InstancesPingStatusesTable extends InstancesPingStatuses
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $InstancesPingStatusesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _instanceIdMeta =
       const VerificationMeta('instanceId');
   @override
@@ -383,7 +412,7 @@ class $InstancesPingStatusesTable extends InstancesPingStatuses
       'ping_time', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [instanceId, statusCode, pingTime];
+  List<GeneratedColumn> get $columns => [id, instanceId, statusCode, pingTime];
   @override
   String get aliasedName => _alias ?? 'instances_ping_statuses';
   @override
@@ -394,6 +423,9 @@ class $InstancesPingStatusesTable extends InstancesPingStatuses
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
     if (data.containsKey('instance_id')) {
       context.handle(
           _instanceIdMeta,
@@ -420,11 +452,13 @@ class $InstancesPingStatusesTable extends InstancesPingStatuses
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => const {};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   InstancesPingStatus map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return InstancesPingStatus(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       instanceId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}instance_id'])!,
       statusCode: attachedDatabase.typeMapping

@@ -47,4 +47,10 @@ class InstancesPingStatusDao extends DatabaseAccessor<DriftInstancesDatabase>
           ..where((tbl) => tbl.instanceId.equals(instance.id)))
         .watch();
   }
+
+  Future removeInstancePingStatus(InstancesPingStatus status) {
+    return (delete(instancesPingStatuses)
+          ..where((tbl) => tbl.id.equals(status.id)))
+        .go();
+  }
 }
