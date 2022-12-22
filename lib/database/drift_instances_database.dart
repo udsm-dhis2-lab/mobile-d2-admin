@@ -53,4 +53,8 @@ class InstancesPingStatusDao extends DatabaseAccessor<DriftInstancesDatabase>
           ..where((tbl) => tbl.id.equals(status.id)))
         .go();
   }
+
+  Future<int> addInstancePingStatus(InstancesPingStatusesCompanion status) {
+    return into(instancesPingStatuses).insert(status);
+  }
 }
