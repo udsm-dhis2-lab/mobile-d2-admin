@@ -33,6 +33,10 @@ class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
   Stream<List<Instance>> watchAllInstances() {
     return select(instances).watch();
   }
+
+  Future<int> addInstance(InstancesCompanion instance) {
+    return into(instances).insert(instance);
+  }
 }
 
 @DriftAccessor(tables: [InstancesPingStatuses])
