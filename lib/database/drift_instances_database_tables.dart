@@ -8,6 +8,7 @@ class Instances extends Table {
 
 @DataClassName('InstancesPingStatus')
 class InstancesPingStatuses extends Table {
+  IntColumn get id => integer().autoIncrement()();
   IntColumn get instanceId => integer()();
   TextColumn get statusCode => text()();
   DateTimeColumn get pingTime => dateTime()();
