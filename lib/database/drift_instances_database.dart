@@ -37,6 +37,11 @@ class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
   Future<int> addInstance(InstancesCompanion instance) {
     return into(instances).insert(instance);
   }
+
+  Future updateInstance(Instance instance) {
+    return (update(instances)..where((tbl) => tbl.id.equals(instance.id)))
+        .replace(instance);
+  }
 }
 
 @DriftAccessor(tables: [InstancesPingStatuses])
