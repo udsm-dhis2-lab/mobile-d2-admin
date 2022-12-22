@@ -42,6 +42,11 @@ class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
     return (update(instances)..where((tbl) => tbl.id.equals(instance.id)))
         .replace(instance);
   }
+
+  Future removeInstance(Instance instance) {
+    return (delete(instances)..where((tbl) => tbl.id.equals(instance.id)))
+        .go();
+  }
 }
 
 @DriftAccessor(tables: [InstancesPingStatuses])
