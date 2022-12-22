@@ -6,8 +6,8 @@ class Instances extends Table {
   TextColumn get instanceUrl => text()();
 }
 
-class InstancesPingStatus extends Table {
-  String get tableName => 'InstancesPingStatus';
+@DataClassName('InstancesPingStatus')
+class InstancesPingStatuses extends Table {
   IntColumn get instanceId => integer()();
   TextColumn get statusCode => text()();
   DateTimeColumn get pingTime => dateTime()();
