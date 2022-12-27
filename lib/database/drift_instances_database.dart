@@ -5,7 +5,8 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import 'package:mobile_d2_admin/database/drift_instances_database_tables.dart';
+import 'drift_instances_database_tables.dart';
+import '../models/models.dart';
 part 'drift_instances_database.g.dart';
 
 @DriftDatabase(tables: [DriftInstances, DriftInstancesPingStatuses])
@@ -68,7 +69,40 @@ class InstancesPingStatusDao extends DatabaseAccessor<DriftInstancesDatabase>
         .go();
   }
 
-  Future<int> addInstancePingStatus(DriftInstancesPingStatusesCompanion status) {
+  Future<int> addInstancePingStatus(
+      DriftInstancesPingStatusesCompanion status) {
     return into(driftInstancesPingStatuses).insert(status);
   }
+}
+
+// Conversion methods
+
+Instance driftInstanceToInstance(DriftInstance instance) {
+  return Instance(
+      id: instance.id,
+      instanceName: instance.instanceName,
+      instanceUrl: instance.instanceUrl);
+}
+
+Insertable<DriftInstance> instanceToDriftInstance(Instance instance) {
+  return DriftInstancesCompanion.insert(
+      instanceName: instance.instanceName, instanceUrl: instance.instanceUrl);
+}
+
+InstancesPingStatus driftInstancesPingStatusToInstancesPingStatus(
+    DriftInstancesPingStatus pingStatus) {
+  return InstancesPingStatus(
+      id: pingStatus.id,
+      instanceId: pingStatus.instanceId,
+      statusCode: pingStatus.statusCode,
+      pingTime: pingStatus.pingTime);
+}
+
+Insertable<DriftInstancesPingStatus>
+    instancesPingStatusToDriftInstancesPingStatus(
+        InstancesPingStatus pingStatus) {
+  return DriftInstancesPingStatusesCompanion.insert(
+      instanceId: pingStatus.instanceId,
+      statusCode: pingStatus.statusCode,
+      pingTime: pingStatus.pingTime);
 }
