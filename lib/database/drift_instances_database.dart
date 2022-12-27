@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:mobile_d2_admin/database/drift_instances_database_tables.dart';
 part 'drift_instances_database.g.dart';
 
-@DriftDatabase(tables: [Instances, InstancesPingStatuses])
+@DriftDatabase(tables: [DriftInstances, DriftInstancesPingStatuses])
 class DriftInstancesDatabase extends _$DriftInstancesDatabase {
   DriftInstancesDatabase() : super(_openDatabase());
 
@@ -24,51 +24,51 @@ LazyDatabase _openDatabase() {
   });
 }
 
-@DriftAccessor(tables: [Instances])
+@DriftAccessor(tables: [DriftInstances])
 class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
     with _$InstancesDaoMixin {
   final DriftInstancesDatabase db;
   InstancesDao(this.db) : super(db);
 
-  Stream<List<Instance>> watchAllInstances() {
-    return select(instances).watch();
+  Stream<List<DriftInstance>> watchAllInstances() {
+    return select(driftInstances).watch();
   }
 
-  Future<int> addInstance(InstancesCompanion instance) {
-    return into(instances).insert(instance);
+  Future<int> addInstance(DriftInstancesCompanion instance) {
+    return into(driftInstances).insert(instance);
   }
 
-  Future updateInstance(Instance instance) {
-    return (update(instances)..where((tbl) => tbl.id.equals(instance.id)))
+  Future updateInstance(DriftInstance instance) {
+    return (update(driftInstances)..where((tbl) => tbl.id.equals(instance.id)))
         .replace(instance);
   }
 
-  Future removeInstance(Instance instance) {
-    return (delete(instances)..where((tbl) => tbl.id.equals(instance.id)))
+  Future removeInstance(DriftInstance instance) {
+    return (delete(driftInstances)..where((tbl) => tbl.id.equals(instance.id)))
         .go();
   }
 }
 
-@DriftAccessor(tables: [InstancesPingStatuses])
+@DriftAccessor(tables: [DriftInstancesPingStatuses])
 class InstancesPingStatusDao extends DatabaseAccessor<DriftInstancesDatabase>
     with _$InstancesPingStatusDaoMixin {
   final DriftInstancesDatabase db;
   InstancesPingStatusDao(this.db) : super(db);
 
-  Stream<List<InstancesPingStatus>> searchInstancesPingStatusByInstanceId(
-      Instance instance) {
-    return (select(instancesPingStatuses)
+  Stream<List<DriftInstancesPingStatus>> searchInstancesPingStatusByInstanceId(
+      DriftInstance instance) {
+    return (select(driftInstancesPingStatuses)
           ..where((tbl) => tbl.instanceId.equals(instance.id)))
         .watch();
   }
 
-  Future removeInstancePingStatus(InstancesPingStatus status) {
-    return (delete(instancesPingStatuses)
+  Future removeInstancePingStatus(DriftInstancesPingStatus status) {
+    return (delete(driftInstancesPingStatuses)
           ..where((tbl) => tbl.id.equals(status.id)))
         .go();
   }
 
-  Future<int> addInstancePingStatus(InstancesPingStatusesCompanion status) {
-    return into(instancesPingStatuses).insert(status);
+  Future<int> addInstancePingStatus(DriftInstancesPingStatusesCompanion status) {
+    return into(driftInstancesPingStatuses).insert(status);
   }
 }

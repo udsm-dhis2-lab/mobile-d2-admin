@@ -3,11 +3,11 @@
 part of 'drift_instances_database.dart';
 
 // ignore_for_file: type=lint
-class Instance extends DataClass implements Insertable<Instance> {
+class DriftInstance extends DataClass implements Insertable<DriftInstance> {
   final int id;
   final String instanceName;
   final String instanceUrl;
-  const Instance(
+  const DriftInstance(
       {required this.id,
       required this.instanceName,
       required this.instanceUrl});
@@ -20,18 +20,18 @@ class Instance extends DataClass implements Insertable<Instance> {
     return map;
   }
 
-  InstancesCompanion toCompanion(bool nullToAbsent) {
-    return InstancesCompanion(
+  DriftInstancesCompanion toCompanion(bool nullToAbsent) {
+    return DriftInstancesCompanion(
       id: Value(id),
       instanceName: Value(instanceName),
       instanceUrl: Value(instanceUrl),
     );
   }
 
-  factory Instance.fromJson(Map<String, dynamic> json,
+  factory DriftInstance.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Instance(
+    return DriftInstance(
       id: serializer.fromJson<int>(json['id']),
       instanceName: serializer.fromJson<String>(json['instanceName']),
       instanceUrl: serializer.fromJson<String>(json['instanceUrl']),
@@ -47,15 +47,16 @@ class Instance extends DataClass implements Insertable<Instance> {
     };
   }
 
-  Instance copyWith({int? id, String? instanceName, String? instanceUrl}) =>
-      Instance(
+  DriftInstance copyWith(
+          {int? id, String? instanceName, String? instanceUrl}) =>
+      DriftInstance(
         id: id ?? this.id,
         instanceName: instanceName ?? this.instanceName,
         instanceUrl: instanceUrl ?? this.instanceUrl,
       );
   @override
   String toString() {
-    return (StringBuffer('Instance(')
+    return (StringBuffer('DriftInstance(')
           ..write('id: $id, ')
           ..write('instanceName: $instanceName, ')
           ..write('instanceUrl: $instanceUrl')
@@ -68,28 +69,28 @@ class Instance extends DataClass implements Insertable<Instance> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Instance &&
+      (other is DriftInstance &&
           other.id == this.id &&
           other.instanceName == this.instanceName &&
           other.instanceUrl == this.instanceUrl);
 }
 
-class InstancesCompanion extends UpdateCompanion<Instance> {
+class DriftInstancesCompanion extends UpdateCompanion<DriftInstance> {
   final Value<int> id;
   final Value<String> instanceName;
   final Value<String> instanceUrl;
-  const InstancesCompanion({
+  const DriftInstancesCompanion({
     this.id = const Value.absent(),
     this.instanceName = const Value.absent(),
     this.instanceUrl = const Value.absent(),
   });
-  InstancesCompanion.insert({
+  DriftInstancesCompanion.insert({
     this.id = const Value.absent(),
     required String instanceName,
     required String instanceUrl,
   })  : instanceName = Value(instanceName),
         instanceUrl = Value(instanceUrl);
-  static Insertable<Instance> custom({
+  static Insertable<DriftInstance> custom({
     Expression<int>? id,
     Expression<String>? instanceName,
     Expression<String>? instanceUrl,
@@ -101,11 +102,11 @@ class InstancesCompanion extends UpdateCompanion<Instance> {
     });
   }
 
-  InstancesCompanion copyWith(
+  DriftInstancesCompanion copyWith(
       {Value<int>? id,
       Value<String>? instanceName,
       Value<String>? instanceUrl}) {
-    return InstancesCompanion(
+    return DriftInstancesCompanion(
       id: id ?? this.id,
       instanceName: instanceName ?? this.instanceName,
       instanceUrl: instanceUrl ?? this.instanceUrl,
@@ -129,7 +130,7 @@ class InstancesCompanion extends UpdateCompanion<Instance> {
 
   @override
   String toString() {
-    return (StringBuffer('InstancesCompanion(')
+    return (StringBuffer('DriftInstancesCompanion(')
           ..write('id: $id, ')
           ..write('instanceName: $instanceName, ')
           ..write('instanceUrl: $instanceUrl')
@@ -138,12 +139,12 @@ class InstancesCompanion extends UpdateCompanion<Instance> {
   }
 }
 
-class $InstancesTable extends Instances
-    with TableInfo<$InstancesTable, Instance> {
+class $DriftInstancesTable extends DriftInstances
+    with TableInfo<$DriftInstancesTable, DriftInstance> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $InstancesTable(this.attachedDatabase, [this._alias]);
+  $DriftInstancesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -168,11 +169,11 @@ class $InstancesTable extends Instances
   @override
   List<GeneratedColumn> get $columns => [id, instanceName, instanceUrl];
   @override
-  String get aliasedName => _alias ?? 'instances';
+  String get aliasedName => _alias ?? 'drift_instances';
   @override
-  String get actualTableName => 'instances';
+  String get actualTableName => 'drift_instances';
   @override
-  VerificationContext validateIntegrity(Insertable<Instance> instance,
+  VerificationContext validateIntegrity(Insertable<DriftInstance> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -201,9 +202,9 @@ class $InstancesTable extends Instances
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Instance map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftInstance map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Instance(
+    return DriftInstance(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       instanceName: attachedDatabase.typeMapping
@@ -214,18 +215,18 @@ class $InstancesTable extends Instances
   }
 
   @override
-  $InstancesTable createAlias(String alias) {
-    return $InstancesTable(attachedDatabase, alias);
+  $DriftInstancesTable createAlias(String alias) {
+    return $DriftInstancesTable(attachedDatabase, alias);
   }
 }
 
-class InstancesPingStatus extends DataClass
-    implements Insertable<InstancesPingStatus> {
+class DriftInstancesPingStatus extends DataClass
+    implements Insertable<DriftInstancesPingStatus> {
   final int id;
   final int instanceId;
   final String statusCode;
   final DateTime pingTime;
-  const InstancesPingStatus(
+  const DriftInstancesPingStatus(
       {required this.id,
       required this.instanceId,
       required this.statusCode,
@@ -240,8 +241,8 @@ class InstancesPingStatus extends DataClass
     return map;
   }
 
-  InstancesPingStatusesCompanion toCompanion(bool nullToAbsent) {
-    return InstancesPingStatusesCompanion(
+  DriftInstancesPingStatusesCompanion toCompanion(bool nullToAbsent) {
+    return DriftInstancesPingStatusesCompanion(
       id: Value(id),
       instanceId: Value(instanceId),
       statusCode: Value(statusCode),
@@ -249,10 +250,10 @@ class InstancesPingStatus extends DataClass
     );
   }
 
-  factory InstancesPingStatus.fromJson(Map<String, dynamic> json,
+  factory DriftInstancesPingStatus.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return InstancesPingStatus(
+    return DriftInstancesPingStatus(
       id: serializer.fromJson<int>(json['id']),
       instanceId: serializer.fromJson<int>(json['instanceId']),
       statusCode: serializer.fromJson<String>(json['statusCode']),
@@ -270,9 +271,9 @@ class InstancesPingStatus extends DataClass
     };
   }
 
-  InstancesPingStatus copyWith(
+  DriftInstancesPingStatus copyWith(
           {int? id, int? instanceId, String? statusCode, DateTime? pingTime}) =>
-      InstancesPingStatus(
+      DriftInstancesPingStatus(
         id: id ?? this.id,
         instanceId: instanceId ?? this.instanceId,
         statusCode: statusCode ?? this.statusCode,
@@ -280,7 +281,7 @@ class InstancesPingStatus extends DataClass
       );
   @override
   String toString() {
-    return (StringBuffer('InstancesPingStatus(')
+    return (StringBuffer('DriftInstancesPingStatus(')
           ..write('id: $id, ')
           ..write('instanceId: $instanceId, ')
           ..write('statusCode: $statusCode, ')
@@ -294,26 +295,26 @@ class InstancesPingStatus extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is InstancesPingStatus &&
+      (other is DriftInstancesPingStatus &&
           other.id == this.id &&
           other.instanceId == this.instanceId &&
           other.statusCode == this.statusCode &&
           other.pingTime == this.pingTime);
 }
 
-class InstancesPingStatusesCompanion
-    extends UpdateCompanion<InstancesPingStatus> {
+class DriftInstancesPingStatusesCompanion
+    extends UpdateCompanion<DriftInstancesPingStatus> {
   final Value<int> id;
   final Value<int> instanceId;
   final Value<String> statusCode;
   final Value<DateTime> pingTime;
-  const InstancesPingStatusesCompanion({
+  const DriftInstancesPingStatusesCompanion({
     this.id = const Value.absent(),
     this.instanceId = const Value.absent(),
     this.statusCode = const Value.absent(),
     this.pingTime = const Value.absent(),
   });
-  InstancesPingStatusesCompanion.insert({
+  DriftInstancesPingStatusesCompanion.insert({
     this.id = const Value.absent(),
     required int instanceId,
     required String statusCode,
@@ -321,7 +322,7 @@ class InstancesPingStatusesCompanion
   })  : instanceId = Value(instanceId),
         statusCode = Value(statusCode),
         pingTime = Value(pingTime);
-  static Insertable<InstancesPingStatus> custom({
+  static Insertable<DriftInstancesPingStatus> custom({
     Expression<int>? id,
     Expression<int>? instanceId,
     Expression<String>? statusCode,
@@ -335,12 +336,12 @@ class InstancesPingStatusesCompanion
     });
   }
 
-  InstancesPingStatusesCompanion copyWith(
+  DriftInstancesPingStatusesCompanion copyWith(
       {Value<int>? id,
       Value<int>? instanceId,
       Value<String>? statusCode,
       Value<DateTime>? pingTime}) {
-    return InstancesPingStatusesCompanion(
+    return DriftInstancesPingStatusesCompanion(
       id: id ?? this.id,
       instanceId: instanceId ?? this.instanceId,
       statusCode: statusCode ?? this.statusCode,
@@ -368,7 +369,7 @@ class InstancesPingStatusesCompanion
 
   @override
   String toString() {
-    return (StringBuffer('InstancesPingStatusesCompanion(')
+    return (StringBuffer('DriftInstancesPingStatusesCompanion(')
           ..write('id: $id, ')
           ..write('instanceId: $instanceId, ')
           ..write('statusCode: $statusCode, ')
@@ -378,12 +379,12 @@ class InstancesPingStatusesCompanion
   }
 }
 
-class $InstancesPingStatusesTable extends InstancesPingStatuses
-    with TableInfo<$InstancesPingStatusesTable, InstancesPingStatus> {
+class $DriftInstancesPingStatusesTable extends DriftInstancesPingStatuses
+    with TableInfo<$DriftInstancesPingStatusesTable, DriftInstancesPingStatus> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $InstancesPingStatusesTable(this.attachedDatabase, [this._alias]);
+  $DriftInstancesPingStatusesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -414,12 +415,12 @@ class $InstancesPingStatusesTable extends InstancesPingStatuses
   @override
   List<GeneratedColumn> get $columns => [id, instanceId, statusCode, pingTime];
   @override
-  String get aliasedName => _alias ?? 'instances_ping_statuses';
+  String get aliasedName => _alias ?? 'drift_instances_ping_statuses';
   @override
-  String get actualTableName => 'instances_ping_statuses';
+  String get actualTableName => 'drift_instances_ping_statuses';
   @override
   VerificationContext validateIntegrity(
-      Insertable<InstancesPingStatus> instance,
+      Insertable<DriftInstancesPingStatus> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -454,9 +455,10 @@ class $InstancesPingStatusesTable extends InstancesPingStatuses
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  InstancesPingStatus map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DriftInstancesPingStatus map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return InstancesPingStatus(
+    return DriftInstancesPingStatus(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       instanceId: attachedDatabase.typeMapping
@@ -469,29 +471,29 @@ class $InstancesPingStatusesTable extends InstancesPingStatuses
   }
 
   @override
-  $InstancesPingStatusesTable createAlias(String alias) {
-    return $InstancesPingStatusesTable(attachedDatabase, alias);
+  $DriftInstancesPingStatusesTable createAlias(String alias) {
+    return $DriftInstancesPingStatusesTable(attachedDatabase, alias);
   }
 }
 
 abstract class _$DriftInstancesDatabase extends GeneratedDatabase {
   _$DriftInstancesDatabase(QueryExecutor e) : super(e);
-  late final $InstancesTable instances = $InstancesTable(this);
-  late final $InstancesPingStatusesTable instancesPingStatuses =
-      $InstancesPingStatusesTable(this);
+  late final $DriftInstancesTable driftInstances = $DriftInstancesTable(this);
+  late final $DriftInstancesPingStatusesTable driftInstancesPingStatuses =
+      $DriftInstancesPingStatusesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [instances, instancesPingStatuses];
+      [driftInstances, driftInstancesPingStatuses];
 }
 
 mixin _$InstancesDaoMixin on DatabaseAccessor<DriftInstancesDatabase> {
-  $InstancesTable get instances => attachedDatabase.instances;
+  $DriftInstancesTable get driftInstances => attachedDatabase.driftInstances;
 }
 mixin _$InstancesPingStatusDaoMixin
     on DatabaseAccessor<DriftInstancesDatabase> {
-  $InstancesPingStatusesTable get instancesPingStatuses =>
-      attachedDatabase.instancesPingStatuses;
+  $DriftInstancesPingStatusesTable get driftInstancesPingStatuses =>
+      attachedDatabase.driftInstancesPingStatuses;
 }
