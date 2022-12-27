@@ -1,10 +1,10 @@
 class Instance {
-  int id;
+  int? id;
   String instanceName;
   String instanceUrl;
 
   Instance({
-    required this.id,
+    this.id,
     required this.instanceName,
     required this.instanceUrl
   });
