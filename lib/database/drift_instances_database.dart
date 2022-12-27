@@ -9,7 +9,9 @@ import 'drift_instances_database_tables.dart';
 import '../models/models.dart';
 part 'drift_instances_database.g.dart';
 
-@DriftDatabase(tables: [DriftInstances, DriftInstancesPingStatuses])
+@DriftDatabase(
+    tables: [DriftInstances, DriftInstancesPingStatuses],
+    daos: [InstancesDao, InstancesPingStatusDao])
 class DriftInstancesDatabase extends _$DriftInstancesDatabase {
   DriftInstancesDatabase() : super(_openDatabase());
 
@@ -35,7 +37,7 @@ class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
     return select(driftInstances).watch();
   }
 
-  Future<int> addInstance(DriftInstancesCompanion instance) {
+  Future<int> addInstance(Insertable<DriftInstance> instance) {
     return into(driftInstances).insert(instance);
   }
 
@@ -44,9 +46,14 @@ class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
         .replace(instance);
   }
 
-  Future removeInstance(DriftInstance instance) {
-    return (delete(driftInstances)..where((tbl) => tbl.id.equals(instance.id)))
+  Future removeInstance(int instanceId) {
+    return (delete(driftInstances)..where((tbl) => tbl.id.equals(instanceId)))
         .go();
+  }
+
+  Future<DriftInstance> findInstanceById(int instanceId) {
+    return (select(driftInstances)..where((tbl) => tbl.id.equals(instanceId)))
+        .getSingle();
   }
 }
 
@@ -56,21 +63,28 @@ class InstancesPingStatusDao extends DatabaseAccessor<DriftInstancesDatabase>
   final DriftInstancesDatabase db;
   InstancesPingStatusDao(this.db) : super(db);
 
-  Stream<List<DriftInstancesPingStatus>> searchInstancesPingStatusByInstanceId(
-      DriftInstance instance) {
+  Stream<List<DriftInstancesPingStatus>> watchInstancesPingStatusByInstanceId(
+      int instanceId) {
     return (select(driftInstancesPingStatuses)
-          ..where((tbl) => tbl.instanceId.equals(instance.id)))
+          ..where((tbl) => tbl.instanceId.equals(instanceId)))
         .watch();
   }
 
-  Future removeInstancePingStatus(DriftInstancesPingStatus status) {
+  Future<List<DriftInstancesPingStatus>> findInstacesPingStatusByInstaceId(
+      int instanceId) {
+    return (select(driftInstancesPingStatuses)
+          ..where((tbl) => tbl.instanceId.equals(instanceId)))
+        .get();
+  }
+
+  Future removeInstancePingStatus(int pingStatusId) {
     return (delete(driftInstancesPingStatuses)
-          ..where((tbl) => tbl.id.equals(status.id)))
+          ..where((tbl) => tbl.id.equals(pingStatusId)))
         .go();
   }
 
   Future<int> addInstancePingStatus(
-      DriftInstancesPingStatusesCompanion status) {
+      Insertable<DriftInstancesPingStatus> status) {
     return into(driftInstancesPingStatuses).insert(status);
   }
 }

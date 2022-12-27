@@ -481,6 +481,10 @@ abstract class _$DriftInstancesDatabase extends GeneratedDatabase {
   late final $DriftInstancesTable driftInstances = $DriftInstancesTable(this);
   late final $DriftInstancesPingStatusesTable driftInstancesPingStatuses =
       $DriftInstancesPingStatusesTable(this);
+  late final InstancesDao instancesDao =
+      InstancesDao(this as DriftInstancesDatabase);
+  late final InstancesPingStatusDao instancesPingStatusDao =
+      InstancesPingStatusDao(this as DriftInstancesDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
