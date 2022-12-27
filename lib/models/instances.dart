@@ -1,9 +1,9 @@
-class Instances {
+class Instance {
   int id;
   String instanceName;
   String instanceUrl;
 
-  Instances({
+  Instance({
     required this.id,
     required this.instanceName,
     required this.instanceUrl
