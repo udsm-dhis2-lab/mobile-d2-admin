@@ -1,6 +1,6 @@
-import '../models/models.dart';
+import '../../models/models.dart';
 import 'drift_instances_database.dart';
-import 'repository.dart';
+import '../repository.dart';
 
 class DriftRepository implements Repository {
   late DriftInstancesDatabase driftInstancesDatabase;

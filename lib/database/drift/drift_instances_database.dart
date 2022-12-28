@@ -6,7 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import 'drift_instances_database_tables.dart';
-import '../models/models.dart';
+import '../../models/models.dart';
 part 'drift_instances_database.g.dart';
 
 @DriftDatabase(
