@@ -4,8 +4,10 @@ abstract class Repository {
   Future init();
 
   void close();
-  
+
   Stream<List<Instance>> watchAllInstances();
+
+  Future<List<Instance>> getAllInstances();
 
   Future<int> addInstance(Instance instance);
 
