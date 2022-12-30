@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:workmanager/workmanager.dart';
 
 import 'ping_instance.dart';
 import 'check_connectivity.dart';
