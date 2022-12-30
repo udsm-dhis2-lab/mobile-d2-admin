@@ -6,23 +6,11 @@ import 'ping_instance.dart';
 import 'check_connectivity.dart';
 import '/database/repository.dart';
 
-class PerformingPinging {
+class ForegroundPinging {
   final Repository repository;
 
-  PerformingPinging({required this.repository});
+  ForegroundPinging({required this.repository});
 
-// This function will perfom pinging in the background
-  void performBackgroundPinging() {
-    @pragma('vm:entry-point')
-    void callbackDispatcher() {
-      Workmanager().executeTask((task, inputData) {
-        // perfom pinging
-        final pingInstance = PingInstance(repository: repository);
-        pingInstance.pingInstances();
-        return Future.value(true);
-      });
-    }
-  }
 
 // This function will perfom pinging in foreground
   void perfomForegroundPinging() {
