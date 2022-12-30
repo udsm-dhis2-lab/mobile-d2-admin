@@ -28,10 +28,9 @@ class DriftRepository implements Repository {
 
       instancesStream = stream.map((driftInstances) {
         final instances = <Instance>[];
-
-        driftInstances.forEach((driftInstance) {
+        for (var driftInstance in driftInstances) {
           instances.add(driftInstanceToInstance(driftInstance));
-        });
+        }
         return instances;
       });
     }
@@ -44,9 +43,9 @@ class DriftRepository implements Repository {
 
     final instances = <Instance>[];
 
-    driftInstances.forEach((driftInstance) {
+    for (var driftInstance in driftInstances) {
       instances.add(driftInstanceToInstance(driftInstance));
-    });
+    }
     return instances;
   }
 
@@ -87,11 +86,10 @@ class DriftRepository implements Repository {
 
       instancesPingstatusStream = stream.map((driftInstancesPingStatuses) {
         final pingStatuses = <InstancesPingStatus>[];
-
-        driftInstancesPingStatuses.forEach((driftInstancesPingStatus) {
+        for (var driftInstancesPingStatus in driftInstancesPingStatuses) {
           pingStatuses.add(driftInstancesPingStatusToInstancesPingStatus(
               driftInstancesPingStatus));
-        });
+        }
         return pingStatuses;
       });
     }
@@ -112,10 +110,10 @@ class DriftRepository implements Repository {
       await _instancesPingStatusDao
           .findInstacesPingStatusByInstaceId(status.instanceId)
           .then((driftInstancesPingStatues) {
-        driftInstancesPingStatues.forEach((driftInstancePingStatus) {
+        for (var driftInstancePingStatus in driftInstancesPingStatues) {
           pingStatuses.add(driftInstancesPingStatusToInstancesPingStatus(
               driftInstancePingStatus));
-        });
+        }
       });
       if (pingStatuses.length < 10) {
         final id = await _instancesPingStatusDao.addInstancePingStatus(
