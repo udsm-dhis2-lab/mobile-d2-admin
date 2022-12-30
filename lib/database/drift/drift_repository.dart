@@ -39,6 +39,18 @@ class DriftRepository implements Repository {
   }
 
   @override
+  Future<List<Instance>> getAllInstances() async {
+    final driftInstances = await _instancesDao.getAllInstances();
+
+    final instances = <Instance>[];
+
+    driftInstances.forEach((driftInstance) {
+      instances.add(driftInstanceToInstance(driftInstance));
+    });
+    return instances;
+  }
+
+  @override
   Future<int> addInstance(Instance instance) {
     return Future(() async {
       final id =
