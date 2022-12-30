@@ -37,6 +37,10 @@ class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
     return select(driftInstances).watch();
   }
 
+  Future<List<DriftInstance>> getAllInstance() {
+    return select(driftInstances).get();
+  }
+
   Future<int> addInstance(Insertable<DriftInstance> instance) {
     return into(driftInstances).insert(instance);
   }
