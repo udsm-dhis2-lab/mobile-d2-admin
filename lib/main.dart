@@ -7,6 +7,8 @@ import '/core/ping/foreground_pinging.dart';
 import '/core/ping/ping_instance.dart';
 import '/database/drift/drift_repository.dart';
 import '/database/repository.dart';
+import 'package:mobile_d2_admin/config/light_theme.dart';
+import 'package:mobile_d2_admin/screens/home_screen.dart';
 
 final repository = DriftRepository();
 
@@ -86,12 +88,18 @@ class _D2AdminState extends State<D2Admin> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      Provider<Repository>(
-        lazy: false,
-        create: (_) => repository,
-        dispose: (_, Repository repository) => dispose(),
-      )
-    ]);
+    return MultiProvider(
+      providers: [
+        Provider<Repository>(
+          lazy: false,
+          create: (_) => repository,
+          dispose: (_, Repository repository) => dispose(),
+        )
+      ],
+      child: MaterialApp(
+        theme: D2AdminLightTheme.lightTheme,
+        home: const HomeScreen(),
+      ),
+    );
   }
 }
