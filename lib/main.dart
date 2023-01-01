@@ -99,7 +99,10 @@ class _D2AdminState extends State<D2Admin> with WidgetsBindingObserver {
       ],
       child: MaterialApp(
         theme: D2AdminLightTheme.lightTheme,
-        home: const HomeScreen(),
+        debugShowCheckedModeBanner: false,
+        home: const SafeArea(
+          child: HomeScreen(),
+        ),
       ),
     );
   }
