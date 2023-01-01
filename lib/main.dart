@@ -54,6 +54,7 @@ class _D2AdminState extends State<D2Admin> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     final foregroundPinging = ForegroundPinging(repository: repository);
     foregroundPinging.perfomForegroundPinging();
+    Workmanager().cancelAll();
   }
 
   @override
