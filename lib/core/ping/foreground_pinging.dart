@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'ping_instance.dart';
-import 'check_connectivity.dart';
+import 'network_connectivity.dart';
 import '/database/repository.dart';
 
 class ForegroundPinging {
@@ -13,7 +13,7 @@ class ForegroundPinging {
   void perfomForegroundPinging() {
     Timer.periodic(const Duration(minutes: 5), (timer) async {
       // check if we are connected to the internet
-      if (await CheckConnectivity.checkIfConnected()) {
+      if (await NetworkConnectivity.checkIfConnected()) {
         final pingInstance = PingInstance(repository: repository);
         pingInstance.pingInstances();
       }
