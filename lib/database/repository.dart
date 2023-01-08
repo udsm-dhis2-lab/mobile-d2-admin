@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import '../models/index.dart';
 
 abstract class Repository {
   Future init();

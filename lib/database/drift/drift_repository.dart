@@ -1,4 +1,4 @@
-import '../../models/models.dart';
+import '../../models/index.dart';
 import 'drift_instances_database.dart';
 import '../repository.dart';
 
