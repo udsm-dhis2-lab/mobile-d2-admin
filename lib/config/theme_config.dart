@@ -10,5 +10,6 @@ class AppColors {
   static const onSurfaceColor = Color(0xFF000000);
   static const successColor = Color(0xFF3CCF4E);
   static const errorColor = Color(0xFFFF1E00);
+  static const outlineColor = Color(0xFFE5E5E5);
   static const textMuted = Color(0xFFAD9D9D);
 }
