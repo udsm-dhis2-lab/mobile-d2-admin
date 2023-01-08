@@ -8,7 +8,7 @@ import '/core/ping/ping_instance.dart';
 import '/database/drift/drift_repository.dart';
 import '/database/repository.dart';
 import 'package:mobile_d2_admin/config/light_theme.dart';
-import 'package:mobile_d2_admin/screens/home_screen.dart';
+import 'package:mobile_d2_admin/screens/home/home_screen.dart';
 
 final repository = DriftRepository();
 
