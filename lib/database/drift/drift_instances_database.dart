@@ -67,6 +67,10 @@ class InstancesPingStatusDao extends DatabaseAccessor<DriftInstancesDatabase>
   final DriftInstancesDatabase db;
   InstancesPingStatusDao(this.db) : super(db);
 
+  Stream<List<DriftInstancesPingStatus>> watchAllInstancePingStatuses() {
+    return select(driftInstancesPingStatuses).watch();
+  }
+
   Stream<List<DriftInstancesPingStatus>> watchInstancesPingStatusByInstanceId(
       int instanceId) {
     return (select(driftInstancesPingStatuses)

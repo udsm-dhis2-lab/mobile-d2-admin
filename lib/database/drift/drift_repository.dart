@@ -78,6 +78,24 @@ class DriftRepository implements Repository {
   }
 
   @override
+  Stream<List<InstancesPingStatus>> watchAllInstancePingStatuses() {
+       if (instancesPingstatusStream == null) {
+      final stream = _instancesPingStatusDao
+          .watchAllInstancePingStatuses();
+
+      instancesPingstatusStream = stream.map((driftInstancesPingStatuses) {
+        final pingStatuses = <InstancesPingStatus>[];
+        for (var driftInstancesPingStatus in driftInstancesPingStatuses) {
+          pingStatuses.add(driftInstancesPingStatusToInstancesPingStatus(
+              driftInstancesPingStatus));
+        }
+        return pingStatuses;
+      });
+    }
+    return instancesPingstatusStream!;
+  }
+
+  @override
   Stream<List<InstancesPingStatus>> searchInstancesPingStatusByInstanceId(
       Instance instance) {
     if (instancesPingstatusStream == null) {

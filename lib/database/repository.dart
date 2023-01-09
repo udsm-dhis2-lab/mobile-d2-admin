@@ -15,6 +15,8 @@ abstract class Repository {
 
   Future removeInstance(Instance instance);
 
+  Stream<List<InstancesPingStatus>> watchAllInstancePingStatuses();
+
   Stream<List<InstancesPingStatus>> searchInstancesPingStatusByInstanceId(
       Instance instance);
 
