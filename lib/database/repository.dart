@@ -18,7 +18,9 @@ abstract class Repository {
   Stream<List<InstancesPingStatus>> watchAllInstancePingStatuses();
 
   Stream<List<InstancesPingStatus>> searchInstancesPingStatusByInstanceId(
-      Instance instance);
+      int id);
+
+  Future<List<InstancesPingStatus>> getInstancesPingStatusByInstanceId(int id);
 
   Future removeInstancePingStatus(InstancesPingStatus status);
 

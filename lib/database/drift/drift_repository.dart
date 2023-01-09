@@ -79,9 +79,8 @@ class DriftRepository implements Repository {
 
   @override
   Stream<List<InstancesPingStatus>> watchAllInstancePingStatuses() {
-       if (instancesPingstatusStream == null) {
-      final stream = _instancesPingStatusDao
-          .watchAllInstancePingStatuses();
+    if (instancesPingstatusStream == null) {
+      final stream = _instancesPingStatusDao.watchAllInstancePingStatuses();
 
       instancesPingstatusStream = stream.map((driftInstancesPingStatuses) {
         final pingStatuses = <InstancesPingStatus>[];
@@ -97,10 +96,10 @@ class DriftRepository implements Repository {
 
   @override
   Stream<List<InstancesPingStatus>> searchInstancesPingStatusByInstanceId(
-      Instance instance) {
+      int instanceId) {
     if (instancesPingstatusStream == null) {
       final stream = _instancesPingStatusDao
-          .watchInstancesPingStatusByInstanceId(instance.id!);
+          .watchInstancesPingStatusByInstanceId(instanceId);
 
       instancesPingstatusStream = stream.map((driftInstancesPingStatuses) {
         final pingStatuses = <InstancesPingStatus>[];
@@ -112,6 +111,20 @@ class DriftRepository implements Repository {
       });
     }
     return instancesPingstatusStream!;
+  }
+
+  @override
+  Future<List<InstancesPingStatus>> getInstancesPingStatusByInstanceId(
+      int instanceId) async {
+    final driftInstancePingStatuses = await _instancesPingStatusDao
+        .findInstacesPingStatusByInstaceId(instanceId);
+
+    final instancesPingStatuses = <InstancesPingStatus>[];
+
+    for (var driftInstancePingStatus in driftInstancePingStatuses) {
+      instancesPingStatuses.add(driftInstancesPingStatusToInstancesPingStatus(driftInstancePingStatus));
+    }
+    return instancesPingStatuses;
   }
 
   @override
