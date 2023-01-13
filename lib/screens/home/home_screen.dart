@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_d2_admin/models/instances_ping_statuses.dart';
+import 'package:mobile_d2_admin/screens/add_instance_screen.dart';
 import 'package:provider/provider.dart';
 
 import '/config/theme_config.dart';
@@ -83,7 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Add Instance',
                 height: heightOfAddInstanceButton,
                 size: size,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) => const AddInstanceScreen()),
+                    ),
+                  );
+                },
               ),
             ),
           ),
