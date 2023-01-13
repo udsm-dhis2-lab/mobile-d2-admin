@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '/config/theme_config.dart';
 import 'widgets/index.dart';
 import '/database/repository.dart';
+import '/widgets/custom_material_button.dart';
 
 class InstanceCardModel {
   final String instanceName;
@@ -78,22 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 heightOfOnlineInstancesSummaryCard,
             child: Align(
               alignment: Alignment.topCenter,
-              child: SizedBox(
-                width: size.width * 0.9,
+              child: CustomMaterialButton(
+                label: 'Add Instance',
                 height: heightOfAddInstanceButton,
-                child: MaterialButton(
-                    elevation: 0.0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    color: AppColors.primaryColor,
-                    child: Text(
-                      'Add Instance',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium!
-                          .copyWith(color: AppColors.onPrimaryColor),
-                    ),
-                    onPressed: () {}),
+                size: size,
+                onPressed: () {},
               ),
             ),
           ),
@@ -209,9 +199,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
 
                 return ListView.builder(
-                  primary: false,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: instanceCards.length,
                     itemBuilder: ((context, index) {
                       final card = instanceCards[index];
