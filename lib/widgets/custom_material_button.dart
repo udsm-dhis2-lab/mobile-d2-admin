@@ -28,7 +28,7 @@ class CustomMaterialButton extends StatelessWidget {
           label,
           style: Theme.of(context)
               .textTheme
-              .labelMedium!
+              .labelLarge!
               .copyWith(color: AppColors.onPrimaryColor),
         ),
       ),
