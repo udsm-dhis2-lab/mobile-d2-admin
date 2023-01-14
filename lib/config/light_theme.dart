@@ -20,9 +20,13 @@ class D2AdminLightTheme {
       fontSize: 10,
       fontWeight: FontWeight.w400,
     ),
-    labelMedium: TextStyle(
+    labelLarge: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
+    ),
+    labelMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
     ),
     labelSmall: TextStyle(
       fontSize: 10,
