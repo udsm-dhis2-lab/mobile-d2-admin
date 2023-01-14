@@ -18,4 +18,6 @@ class AppColors {
   static const textMuted = Color(0xFFAD9D9D);
   static const progressIndicatorColor = Color(0xFFA9CAFF);
   static const appBlackColor = Color(0xFF202124);
+  static const infoColor = Color(0xFFD4EDDA);
+  static const onInfoColor = Color(0xFF155724);
 }
