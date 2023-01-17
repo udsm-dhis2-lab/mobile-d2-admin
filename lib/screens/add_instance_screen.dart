@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_d2_admin/models/index.dart';
 import 'package:provider/provider.dart';
 
 import '/widgets/custom_material_button.dart';
 import '/config/theme_config.dart';
 import '/database/repository.dart';
+import '/models/index.dart';
 
 class AddInstanceScreen extends StatefulWidget {
   const AddInstanceScreen({super.key});
