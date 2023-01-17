@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_d2_admin/models/instances_ping_statuses.dart';
-import 'package:mobile_d2_admin/screens/add_instance_screen.dart';
+import 'package:mobile_d2_admin/models/index.dart';
 import 'package:provider/provider.dart';
 
 import '/config/theme_config.dart';
 import 'widgets/index.dart';
 import '/database/repository.dart';
 import '/widgets/custom_material_button.dart';
+import '/screens/add_instance_screen.dart';
+import '../instance_details.dart';
 
 class InstanceCardModel {
+  final int instanceId;
   final String instanceName;
+  final String instanceUrl;
   final String instanceStatusCode;
 
-  InstanceCardModel({
-    required this.instanceName,
-    required this.instanceStatusCode,
-  });
+  InstanceCardModel(
+      {required this.instanceName,
+      required this.instanceStatusCode,
+      required this.instanceId,
+      required this.instanceUrl});
 }
 
 class HomeScreen extends StatefulWidget {
@@ -105,27 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       buildListHeader(),
-                      _buildInstanceList(context),
-                      // const InstanceCard(
-                      //     instanceName: 'dhis', instanceStatusCode: '200'),
-                      // const InstanceCard(
-                      //     instanceName: 'Muhas', instanceStatusCode: '300'),
-                      // const InstanceCard(
-                      //     instanceName: 'Beta', instanceStatusCode: '200'),
-                      // const InstanceCard(
-                      //     instanceName: 'Test', instanceStatusCode: '200'),
-                      // const InstanceCard(
-                      //     instanceName: 'alpha', instanceStatusCode: '200'),
-                      // const InstanceCard(
-                      //     instanceName: 'UDSM', instanceStatusCode: '678'),
-                      // const InstanceCard(
-                      //     instanceName: 'Lab', instanceStatusCode: '200'),
-                      // const InstanceCard(
-                      //     instanceName: 'THTD', instanceStatusCode: '900'),
-                      // const InstanceCard(
-                      //     instanceName: 'Test2', instanceStatusCode: '200'),
-                      // const InstanceCard(
-                      //     instanceName: 'D2touch', instanceStatusCode: '200'),
+                      Expanded(
+                        child: _buildInstanceList(context),
+                      ),
                     ],
                   ),
                 ),
@@ -153,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Istance',
+            'Instance',
             style: Theme.of(context)
                 .textTheme
                 .titleMedium!
@@ -183,39 +169,61 @@ class _HomeScreenState extends State<HomeScreen> {
           return FutureBuilder(
             future: repository.getAllInstances(),
             builder: ((context, snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.hasData && statuses.isNotEmpty) {
                 final instances = snapshot.data ?? [];
                 final instanceCards = <InstanceCardModel>[];
+
+                // find the latest ping status of each instance
                 for (var instance in instances) {
-                  //  find the latest status of this instance
+                  //  find all ping statuses of this instance
                   final thisInstanceStatuses = <InstancesPingStatus>[];
                   for (var status in statuses) {
                     status.instanceId == instance.id
                         ? thisInstanceStatuses.add(status)
-                        : null;
+                        : [];
                   }
-                  // sort the list of statuses according to date
-                  thisInstanceStatuses
-                      .sort(((a, b) => a.pingTime.compareTo(b.pingTime)));
-                  // get the latest status
-                  final currentStatus = thisInstanceStatuses.last;
 
-                  // add both instance and the status code to instance card model
-                  instanceCards.add(InstanceCardModel(
-                      instanceName: instance.instanceName,
-                      instanceStatusCode: currentStatus.statusCode));
+                  if (thisInstanceStatuses.isNotEmpty) {
+                    // sort the list of statuses according to date
+                    thisInstanceStatuses
+                        .sort(((a, b) => a.pingTime.compareTo(b.pingTime)));
+                    // get the latest status
+                    final currentStatus = thisInstanceStatuses.last;
+
+                    // add both instance and the status code to instance card model
+                    instanceCards.add(InstanceCardModel(
+                        instanceId: instance.id!,
+                        instanceUrl: instance.instanceUrl,
+                        instanceName: instance.instanceName,
+                        instanceStatusCode: currentStatus.statusCode));
+                  }
                 }
 
                 return ListView.builder(
                     primary: false,
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: instanceCards.length,
                     itemBuilder: ((context, index) {
                       final card = instanceCards[index];
-                      return InstanceCard(
-                          instanceName: card.instanceName,
-                          instanceStatusCode: card.instanceStatusCode);
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => InstanceDetails(
+                                    instance: Instance(
+                                      id: card.instanceId,
+                                      instanceName: card.instanceName,
+                                      instanceUrl: card.instanceUrl,
+                                    ),
+                                  )),
+                            ),
+                          );
+                        },
+                        child: InstanceCard(
+                            instanceName: card.instanceName,
+                            instanceStatusCode: card.instanceStatusCode),
+                      );
                     }));
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
