@@ -19,79 +19,35 @@ class InstanceDetails extends StatefulWidget {
 }
 
 class _InstanceDetailsState extends State<InstanceDetails> {
-  String latestPingStatusCode = ''; // This tells if instance is down or up
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+        child: Scaffold(
+      backgroundColor: AppColors.primaryColor,
+      appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: AppColors.primaryColor,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: AppColors.primaryColor,
-          title: Text(
-            widget.instance.instanceName,
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: AppColors.onPrimaryColor,
-                ),
-          ),
-        ),
-        body: Container(
-            padding:
-                const EdgeInsets.only(left: 19, right: 19, top: 24, bottom: 24),
-            height: double.infinity,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: AppColors.surfaceColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+        title: Text(
+          widget.instance.instanceName,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: AppColors.onPrimaryColor,
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      'Ping',
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                    ),
-                    Text(
-                      widget.instance.instanceUrl,
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            color: AppColors.textMuted,
-                          ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                InstanceCurrentState(
-                  pingStatusCode: latestPingStatusCode,
-                ),
-                const SizedBox(height: 24),
-                const DataAdministrationCard(),
-                const SizedBox(height: 32),
-                Expanded(
-                  child: Column(
-                    children: [
-                      buildListHeader(context),
-                      const SizedBox(height: 16),
-                      Expanded(
-                        child: _buildPingStatusesList(
-                            context, widget.instance.id!),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            )),
+        ),
       ),
-    );
+      body: Container(
+          padding:
+              const EdgeInsets.only(left: 19, right: 19, top: 24, bottom: 24),
+          height: double.infinity,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            color: AppColors.surfaceColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: _buildInstanceDetailScreen(context, widget.instance.id!)),
+    ));
   }
 
   Widget buildListHeader(BuildContext context) {
@@ -126,7 +82,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
     );
   }
 
-  Widget _buildPingStatusesList(BuildContext context, int instanceId) {
+  Widget _buildInstanceDetailScreen(BuildContext context, int instanceId) {
     final repository = Provider.of<Repository>(context, listen: false);
 
     return FutureBuilder(
@@ -140,26 +96,60 @@ class _InstanceDetailsState extends State<InstanceDetails> {
             statuses.sort(((a, b) => a.pingTime.compareTo(b.pingTime)));
             final latestStatus = statuses.last;
 
-            latestPingStatusCode = latestStatus.statusCode;
+            final latestPingStatusCode = latestStatus.statusCode;
 
             // reverse the list
-            final  reversedStatuses = statuses.reversed.toList();
+            final reversedStatuses = statuses.reversed.toList();
 
-            return ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              itemCount: reversedStatuses.length,
-              itemBuilder: ((context, index) {
-                final status = reversedStatuses[index];
-                return PingStatusCard(
-                  pingStatusCode: status.statusCode,
-                );
-              }),
-              separatorBuilder: ((context, index) {
-                return const SizedBox(
-                  height: 14,
-                );
-              }),
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      'Ping',
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                    ),
+                    Text(
+                      widget.instance.instanceUrl,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                InstanceCurrentState(
+                  pingStatusCode: latestPingStatusCode,
+                ),
+                const SizedBox(height: 24),
+                const DataAdministrationCard(),
+                const SizedBox(height: 32),
+                buildListHeader(context),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: ListView.separated(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: reversedStatuses.length,
+                    itemBuilder: ((context, index) {
+                      final status = reversedStatuses[index];
+                      return PingStatusCard(
+                        pingStatusCode: status.statusCode,
+                      );
+                    }),
+                    separatorBuilder: ((context, index) {
+                      return const SizedBox(
+                        height: 14,
+                      );
+                    }),
+                  ),
+                ),
+              ],
             );
           }
         } else if (snapshot.hasError) {
