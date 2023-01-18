@@ -16,6 +16,8 @@ class AppColors {
   static const successContainerColor = Color(0xFFA0E1AB);
   static const onSuccessContainerColor = Color(0xFFFFFFFF);
   static const errorColor = Color(0xFFFF7B73);
+  static const errorContainerColor = Color.fromRGBO(255, 123, 115, .5);
+  static const onErrorContainerColor = Color(0xFFFFFFFF);
   static const outlineColor = Color(0xFFE5E5E5);
   static const textMuted = Color(0xFFAD9D9D);
   static const progressIndicatorColor = Color(0xFFA9CAFF);
