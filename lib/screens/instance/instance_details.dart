@@ -139,7 +139,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
                     itemBuilder: ((context, index) {
                       final status = reversedStatuses[index];
                       return PingStatusCard(
-                        pingStatusCode: status.statusCode,
+                        status: status,
                       );
                     }),
                     separatorBuilder: ((context, index) {
