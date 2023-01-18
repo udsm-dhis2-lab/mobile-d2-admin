@@ -96,10 +96,11 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
             ),
             const SizedBox(height: 24),
             buildFormField(
-                controller: instanceDetailsController,
-                keyboardType: 'description',
-                label: 'Description',
-                context: context),
+              controller: instanceDetailsController,
+              keyboardType: 'description',
+              label: 'Description',
+              context: context,
+            ),
             const SizedBox(height: 24),
             buildFormField(
               controller: instanceUrlController,
@@ -173,6 +174,7 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
                       instanceUrl: instanceUrlController.text,
                     );
                     repository.addInstance(instance);
+                    Navigator.pop(context);
                   }
                 })
           ],
