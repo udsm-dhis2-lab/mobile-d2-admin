@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '/models/index.dart';
 import '/config/theme_config.dart';
 
 class PingStatusCard extends StatelessWidget {
-  final String pingStatusCode;
+  final InstancesPingStatus status;
   const PingStatusCard({
     super.key,
-    required this.pingStatusCode,
+    required this.status,
   });
 
   @override
@@ -25,14 +27,14 @@ class PingStatusCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _pingStatus(pingStatusCode),
+                _pingStatus(status.statusCode),
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
                     .copyWith(color: AppColors.onSurfaceColor),
               ),
               CircleAvatar(
-                backgroundColor: pingStatusCode == '200'
+                backgroundColor: status.statusCode == '200'
                     ? AppColors.successColor
                     : AppColors.errorColor,
                 radius: 8,
@@ -44,7 +46,7 @@ class PingStatusCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Jul 01, 2022. 13:40 08Hrs',
+                DateFormat.yMMMMEEEEd().add_jms().format(status.pingTime),
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
