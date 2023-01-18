@@ -142,12 +142,15 @@ class _InstanceDetailsState extends State<InstanceDetails> {
 
             latestPingStatusCode = latestStatus.statusCode;
 
+            // reverse the list
+            final  reversedStatuses = statuses.reversed.toList();
+
             return ListView.separated(
               primary: false,
               shrinkWrap: true,
-              itemCount: statuses.length,
+              itemCount: reversedStatuses.length,
               itemBuilder: ((context, index) {
-                final status = statuses[index];
+                final status = reversedStatuses[index];
                 return PingStatusCard(
                   pingStatusCode: status.statusCode,
                 );
