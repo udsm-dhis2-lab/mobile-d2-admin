@@ -20,7 +20,7 @@ class InstanceDetails extends StatelessWidget {
           elevation: 0.0,
           backgroundColor: AppColors.primaryColor,
           title: Text(
-            'Instance details',
+            instance.instanceName,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppColors.onPrimaryColor,
                 ),
@@ -52,7 +52,7 @@ class InstanceDetails extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      'https://www.google.com',
+                  instance.instanceUrl,
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             color: AppColors.textMuted,
                           ),
