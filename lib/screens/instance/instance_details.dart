@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/instances.dart';
 import '/config/theme_config.dart';
 import 'widgets/index.dart';
+import '/database/repository.dart';
+import '/models/instances_ping_statuses.dart';
 
 class InstanceDetails extends StatefulWidget {
   final Instance instance;
@@ -16,8 +19,8 @@ class InstanceDetails extends StatefulWidget {
 }
 
 class _InstanceDetailsState extends State<InstanceDetails> {
-  final String latestPingStatusCode =
-      ''; // This tells if instance is down or up
+  String latestPingStatusCode = ''; // This tells if instance is down or up
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -74,10 +77,14 @@ class _InstanceDetailsState extends State<InstanceDetails> {
                 const DataAdministrationCard(),
                 const SizedBox(height: 32),
                 Expanded(
-                  child: ListView(
+                  child: Column(
                     children: [
                       buildListHeader(context),
                       const SizedBox(height: 16),
+                      Expanded(
+                        child: _buildPingStatusesList(
+                            context, widget.instance.id!),
+                      )
                     ],
                   ),
                 )
@@ -116,6 +123,47 @@ class _InstanceDetailsState extends State<InstanceDetails> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildPingStatusesList(BuildContext context, int instanceId) {
+    final repository = Provider.of<Repository>(context, listen: false);
+
+    return FutureBuilder(
+      future: repository.getInstancesPingStatusByInstanceId(instanceId),
+      builder: ((context, AsyncSnapshot<List<InstancesPingStatus>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            final statuses = snapshot.data ?? [];
+
+            // find the current status
+            statuses.sort(((a, b) => a.pingTime.compareTo(b.pingTime)));
+            final latestStatus = statuses.last;
+
+            latestPingStatusCode = latestStatus.statusCode;
+
+            return ListView.separated(
+              primary: false,
+              shrinkWrap: true,
+              itemCount: statuses.length,
+              itemBuilder: ((context, index) {
+                final status = statuses[index];
+                return PingStatusCard(
+                  pingStatusCode: status.statusCode,
+                );
+              }),
+              separatorBuilder: ((context, index) {
+                return const SizedBox(
+                  height: 14,
+                );
+              }),
+            );
+          }
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        return Container();
+      }),
     );
   }
 }
