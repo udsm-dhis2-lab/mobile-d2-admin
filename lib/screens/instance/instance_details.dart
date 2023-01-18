@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/instances.dart';
 import '/config/theme_config.dart';
+import 'widgets/index.dart';
 
 class InstanceDetails extends StatelessWidget {
   final Instance instance;
@@ -59,7 +60,7 @@ class InstanceDetails extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 14),
-                buildInstanceCurrentStateCard(context),
+                const InstanceCurrentState(),
                 const SizedBox(height: 24),
                 buildDataAdministrationCard(context),
                 const SizedBox(height: 32),
@@ -130,47 +131,6 @@ class InstanceDetails extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget buildInstanceCurrentStateCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 18, top: 10, bottom: 10),
-      height: 71,
-      decoration: BoxDecoration(
-        color: AppColors.successContainerColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const CircleAvatar(
-            radius: 25,
-            backgroundColor: AppColors.successColor,
-          ),
-          const SizedBox(width: 25),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Good Job',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: AppColors.onSuccessContainerColor),
-              ),
-              Text(
-                'Your instance is up',
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: AppColors.onSuccessContainerColor,
-                      fontWeight: FontWeight.w400,
-                    ),
-              ),
-            ],
-          )
-        ],
-      ),
     );
   }
 
