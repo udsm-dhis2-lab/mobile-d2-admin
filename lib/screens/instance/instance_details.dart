@@ -69,30 +69,6 @@ class InstanceDetails extends StatelessWidget {
                     children: [
                       buildListHeader(context),
                       const SizedBox(height: 16),
-                      buildPingStatusesCard(
-                          context: context,
-                          pingStatus: 'Online',
-                          pingStatusCode: '200'),
-                      const SizedBox(height: 14),
-                      buildPingStatusesCard(
-                          context: context,
-                          pingStatus: 'Outage occured',
-                          pingStatusCode: '299'),
-                      const SizedBox(height: 14),
-                      buildPingStatusesCard(
-                          context: context,
-                          pingStatus: 'Bad Gate Way',
-                          pingStatusCode: '288'),
-                      const SizedBox(height: 14),
-                      buildPingStatusesCard(
-                          context: context,
-                          pingStatus: 'Online',
-                          pingStatusCode: '200'),
-                      const SizedBox(height: 14),
-                      buildPingStatusesCard(
-                          context: context,
-                          pingStatus: 'Online',
-                          pingStatusCode: '200'),
                     ],
                   ),
                 )
@@ -134,61 +110,4 @@ class InstanceDetails extends StatelessWidget {
     );
   }
 
-  Widget buildPingStatusesCard({
-    required BuildContext context,
-    required String pingStatus,
-    required String pingStatusCode,
-  }) {
-    return Container(
-      height: 55,
-      padding: const EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 10),
-      decoration: BoxDecoration(
-          color: AppColors.surfaceColor,
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(width: 0.3, color: Colors.black)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                pingStatus,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(color: AppColors.onSurfaceColor),
-              ),
-              CircleAvatar(
-                backgroundColor: pingStatusCode == '200'
-                    ? AppColors.successColor
-                    : AppColors.errorColor,
-                radius: 8,
-              )
-            ],
-          ),
-          const SizedBox(height: 6),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Jul 01, 2022. 13:40 08Hrs',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: AppColors.textMuted),
-              ),
-              Text(
-                '4Hrs',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: AppColors.textMuted),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 }
