@@ -4,13 +4,20 @@ import '../../models/instances.dart';
 import '/config/theme_config.dart';
 import 'widgets/index.dart';
 
-class InstanceDetails extends StatelessWidget {
+class InstanceDetails extends StatefulWidget {
   final Instance instance;
   const InstanceDetails({
     super.key,
     required this.instance,
   });
 
+  @override
+  State<InstanceDetails> createState() => _InstanceDetailsState();
+}
+
+class _InstanceDetailsState extends State<InstanceDetails> {
+  final String latestPingStatusCode =
+      ''; // This tells if instance is down or up
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,7 +27,7 @@ class InstanceDetails extends StatelessWidget {
           elevation: 0.0,
           backgroundColor: AppColors.primaryColor,
           title: Text(
-            instance.instanceName,
+            widget.instance.instanceName,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppColors.onPrimaryColor,
                 ),
@@ -52,7 +59,7 @@ class InstanceDetails extends StatelessWidget {
                           ),
                     ),
                     Text(
-                  instance.instanceUrl,
+                      widget.instance.instanceUrl,
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             color: AppColors.textMuted,
                           ),
@@ -60,7 +67,9 @@ class InstanceDetails extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 14),
-                const InstanceCurrentState(),
+                InstanceCurrentState(
+                  pingStatusCode: latestPingStatusCode,
+                ),
                 const SizedBox(height: 24),
                 const DataAdministrationCard(),
                 const SizedBox(height: 32),
@@ -109,5 +118,4 @@ class InstanceDetails extends StatelessWidget {
       ],
     );
   }
-
 }
