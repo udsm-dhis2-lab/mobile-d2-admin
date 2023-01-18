@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import '/config/theme_config.dart';
 
 class PingStatusCard extends StatelessWidget {
-  final String pingStatus;
   final String pingStatusCode;
   const PingStatusCard({
     super.key,
-    required this.pingStatus,
     required this.pingStatusCode,
   });
 
@@ -27,7 +25,7 @@ class PingStatusCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                pingStatus,
+                _pingStatus(pingStatusCode),
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
@@ -64,5 +62,14 @@ class PingStatusCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _pingStatus(String pingStatusCode) {
+    if (pingStatusCode == '200') {
+      return 'Online';
+    } else if (pingStatusCode == '502') {
+      return 'Bad Gateway (502)';
+    }
+    return pingStatusCode;
   }
 }
