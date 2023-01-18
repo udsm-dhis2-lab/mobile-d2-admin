@@ -62,10 +62,12 @@ class InstanceDetails extends StatelessWidget {
                 buildInstanceCurrentStateCard(context),
                 const SizedBox(height: 24),
                 buildDataAdministrationCard(context),
-                const SizedBox(height: 81),
+                const SizedBox(height: 32),
                 Expanded(
                   child: ListView(
                     children: [
+                      buildListHeader(context),
+                      const SizedBox(height: 16),
                       buildPingStatusesCard(
                           context: context,
                           pingStatus: 'Online',
@@ -96,6 +98,38 @@ class InstanceDetails extends StatelessWidget {
               ],
             )),
       ),
+    );
+  }
+
+  Widget buildListHeader(BuildContext context) {
+    return Row(
+      children: [
+        const Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Divider(
+              height: 30,
+              color: AppColors.onSurfaceColor,
+            ),
+          ),
+        ),
+        Text(
+          'Recent Alerts',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: AppColors.onSurfaceColor),
+        ),
+        const Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Divider(
+              height: 30,
+              color: AppColors.onSurfaceColor,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
