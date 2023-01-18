@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/instances.dart';
+import '../../models/instances.dart';
 import '/config/theme_config.dart';
 
 class InstanceDetails extends StatelessWidget {
