@@ -7,7 +7,7 @@ import 'widgets/index.dart';
 import '/database/repository.dart';
 import '/widgets/custom_material_button.dart';
 import '/screens/add_instance_screen.dart';
-import '../instance_details.dart';
+import '../instance/instance_details.dart';
 
 class InstanceCardModel {
   final int instanceId;
