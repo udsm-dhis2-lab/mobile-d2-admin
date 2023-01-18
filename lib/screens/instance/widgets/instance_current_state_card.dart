@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import '/config/theme_config.dart';
 
 class InstanceCurrentState extends StatelessWidget {
-  const InstanceCurrentState({super.key});
+  final String pingStatusCode;
+  const InstanceCurrentState({
+    super.key,
+    required this.pingStatusCode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,15 +15,19 @@ class InstanceCurrentState extends StatelessWidget {
       padding: const EdgeInsets.only(left: 18, top: 10, bottom: 10),
       height: 71,
       decoration: BoxDecoration(
-        color: AppColors.successContainerColor,
+        color: pingStatusCode == '200'
+            ? AppColors.successContainerColor
+            : AppColors.errorContainerColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 25,
-            backgroundColor: AppColors.successColor,
+            backgroundColor: pingStatusCode == '200'
+                ? AppColors.successColor
+                : AppColors.errorColor,
           ),
           const SizedBox(width: 25),
           Column(
@@ -27,14 +35,16 @@ class InstanceCurrentState extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Good Job',
+                pingStatusCode == '200' ? 'Good Job' : 'Poor Progress',
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
                     .copyWith(color: AppColors.onSuccessContainerColor),
               ),
               Text(
-                'Your instance is up',
+                pingStatusCode == '200'
+                    ? 'Your instance is up'
+                    : 'Your instance is down',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: AppColors.onSuccessContainerColor,
                       fontWeight: FontWeight.w400,
