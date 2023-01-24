@@ -221,12 +221,12 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
             borderSide: const BorderSide(color: AppColors.errorColor, width: 1),
           ),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'This field can not be empty';
-          }
-          return null;
-        },
+        // validator: (value) {
+        //   if (value == null || value.isEmpty) {
+        //     return 'This field can not be empty';
+        //   }
+        //   return null;
+        // },
       ),
     );
   }
