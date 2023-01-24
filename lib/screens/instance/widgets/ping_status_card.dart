@@ -26,18 +26,27 @@ class PingStatusCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                _pingStatus(status.statusCode),
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(color: AppColors.onSurfaceColor),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    _pingStatus(status.statusCode),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: AppColors.onSurfaceColor),
+                        maxLines: 1,
+                  ),
+                ),
               ),
-              CircleAvatar(
-                backgroundColor: status.statusCode == '200'
-                    ? AppColors.successColor
-                    : AppColors.errorColor,
-                radius: 8,
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: CircleAvatar(
+                  backgroundColor: status.statusCode == '200'
+                      ? AppColors.successColor
+                      : AppColors.errorColor,
+                  radius: 8,
+                ),
               )
             ],
           ),
