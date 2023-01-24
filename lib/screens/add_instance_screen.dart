@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_d2_admin/core/ping/ping_instance.dart';
 import 'package:provider/provider.dart';
 
 import '/widgets/custom_material_button.dart';
@@ -69,6 +70,8 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
   }
 
   Widget buildForm(BuildContext context, Size size, Repository repository) {
+    final ping = PingInstance(repository: repository);
+
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -167,13 +170,21 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
             CustomMaterialButton(
                 size: size,
                 label: 'Save',
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     final instance = Instance(
                       instanceName: instanceNameController.text,
                       instanceUrl: instanceUrlController.text,
                     );
-                    repository.addInstance(instance);
+                    final id = await repository.addInstance(instance);
+                    await ping.pingInstance(
+                      Instance(
+                          id: id,
+                          instanceName: instanceNameController.text,
+                          instanceUrl: instanceUrlController.text),
+                    );
+                    // check if not mounted to avoid asychronous gaps after async function
+                    if (!mounted) return;
                     Navigator.pop(context);
                   }
                 })
