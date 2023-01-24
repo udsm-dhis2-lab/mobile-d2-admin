@@ -15,7 +15,7 @@ class ForegroundPinging {
       // check if we are connected to the internet
       if (await NetworkConnectivity.checkIfConnected()) {
         final pingInstance = PingInstance(repository: repository);
-        pingInstance.pingInstances();
+        pingInstance.pingAllInstances();
       }
       return;
     });

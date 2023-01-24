@@ -8,7 +8,7 @@ class PingInstance {
 
   PingInstance({required this.repository});
 
-  void pingInstances() async {
+  void pingAllInstances() async {
     // get all instances
     List<Instance> instances = await repository.getAllInstances();
 

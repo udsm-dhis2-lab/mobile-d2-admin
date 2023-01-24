@@ -23,7 +23,7 @@ void callbackDispatcher() {
       case backgroundTask:
         await repository.init();
         final pingInstance = PingInstance(repository: repository);
-        pingInstance.pingInstances();
+        pingInstance.pingAllInstances();
     }
     return Future.value(true);
   });
