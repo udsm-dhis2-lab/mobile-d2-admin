@@ -44,80 +44,170 @@ class _HomeScreenState extends State<HomeScreen> {
     double elementsWidth = size.width * 0.9;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      body: Stack(
-        children: [
-          Container(
-            height: double.infinity,
-          ),
-          Container(
-            color: AppColors.primaryColor,
-            height: size.height * 0.3,
-          ),
-          Positioned.fill(
-            top: topPadding,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: WelcomeBackCard(
-                userName: 'Yusuf',
-                welcomingWords: 'Welcome back admin',
-                height: heightOfWelcomeCard,
-                width: elementsWidth,
-              ),
+        backgroundColor: AppColors.backgroundColor,
+        body: _buildHome(
+          context,
+          size,
+          topPadding,
+          elementsWidth,
+        ));
+  }
+
+  Widget _buildHome(
+    BuildContext context,
+    Size size,
+    double topPadding,
+    double elementsWidth,
+  ) {
+    final repository = Provider.of<Repository>(context, listen: false);
+    return StreamBuilder<List<InstancesPingStatus>>(
+      // listen to the stream of ping statuses
+      stream: repository.watchAllInstancePingStatuses(),
+      builder: ((context, AsyncSnapshot<List<InstancesPingStatus>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final statuses = snapshot.data ?? [];
+          // get all instances
+          return FutureBuilder(
+            future: repository.getAllInstances(),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData && statuses.isNotEmpty) {
+                final instances = snapshot.data ?? [];
+                final int totalInstances = instances.length;
+                int onlineInstances = 0;
+                final instanceCards = <InstanceCardModel>[];
+
+                // find the latest ping status of each instance
+                for (var instance in instances) {
+                  //  find all ping statuses of this instance
+                  final thisInstanceStatuses = <InstancesPingStatus>[];
+                  for (var status in statuses) {
+                    status.instanceId == instance.id
+                        ? thisInstanceStatuses.add(status)
+                        : [];
+                  }
+
+                  if (thisInstanceStatuses.isNotEmpty) {
+                    // sort the list of statuses according to date
+                    thisInstanceStatuses
+                        .sort(((a, b) => a.pingTime.compareTo(b.pingTime)));
+                    // get the latest status
+                    final currentStatus = thisInstanceStatuses.last;
+
+                    // check if it is online and add increment the number of online instances
+                    currentStatus.statusCode == '200'
+                        ? onlineInstances++
+                        : null;
+
+                    // add both instance and the status code to instance card model
+                    instanceCards.add(InstanceCardModel(
+                        instanceId: instance.id!,
+                        instanceUrl: instance.instanceUrl,
+                        instanceName: instance.instanceName,
+                        instanceStatusCode: currentStatus.statusCode));
+                  }
+                }
+
+                return buildHomeContents(
+                  context: context,
+                  size: size,
+                  topPadding: topPadding,
+                  elementsWidth: elementsWidth,
+                  instanceCards: instanceCards,
+                  onlineInstances: onlineInstances,
+                  totalInstances: totalInstances,
+                );
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              return Container();
+            }),
+          );
+        }
+        return Container();
+      }),
+    );
+  }
+
+  Widget buildHomeContents(
+      {required BuildContext context,
+      required Size size,
+      required double topPadding,
+      required double elementsWidth,
+      required List<InstanceCardModel> instanceCards,
+      required int totalInstances,
+      required int onlineInstances}) {
+    return Stack(
+      children: [
+        Container(
+          height: double.infinity,
+        ),
+        Container(
+          color: AppColors.primaryColor,
+          height: size.height * 0.3,
+        ),
+        Positioned.fill(
+          top: topPadding,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: WelcomeBackCard(
+              userName: 'Yusuf',
+              welcomingWords: 'Welcome back admin',
+              height: heightOfWelcomeCard,
+              width: elementsWidth,
             ),
           ),
-          Positioned.fill(
-            top: 1.5 * topPadding + heightOfWelcomeCard,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: OnlineInstanceSummaryCard(
-                width: elementsWidth,
-                height: heightOfOnlineInstancesSummaryCard,
-                onlineInstances: 13,
-                totalInstances: 27,
-              ),
+        ),
+        Positioned.fill(
+          top: 1.5 * topPadding + heightOfWelcomeCard,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: OnlineInstanceSummaryCard(
+              width: elementsWidth,
+              height: heightOfOnlineInstancesSummaryCard,
+              onlineInstances: onlineInstances,
+              totalInstances: totalInstances,
             ),
           ),
-          Positioned.fill(
-            top: 1.9 * topPadding +
-                heightOfWelcomeCard +
-                heightOfOnlineInstancesSummaryCard,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: CustomMaterialButton(
-                label: 'Add Instance',
-                height: heightOfAddInstanceButton,
-                size: size,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => const AddInstanceScreen()),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Positioned.fill(
-              top: 2.4 * topPadding + heightOfTopElements,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                  width: size.width * 0.9,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      buildListHeader(),
-                      Expanded(
-                        child: _buildInstanceList(context),
-                      ),
-                    ],
+        ),
+        Positioned.fill(
+          top: 1.9 * topPadding +
+              heightOfWelcomeCard +
+              heightOfOnlineInstancesSummaryCard,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: CustomMaterialButton(
+              label: 'Add Instance',
+              height: heightOfAddInstanceButton,
+              size: size,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const AddInstanceScreen()),
                   ),
+                );
+              },
+            ),
+          ),
+        ),
+        Positioned.fill(
+            top: 2.4 * topPadding + heightOfTopElements,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: size.width * 0.9,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildListHeader(),
+                    Expanded(
+                      child: buildInstanceList(instanceCards),
+                    ),
+                  ],
                 ),
-              ))
-        ],
-      ),
+              ),
+            ))
+      ],
     );
   }
 
@@ -157,82 +247,32 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildInstanceList(BuildContext context) {
-    final repository = Provider.of<Repository>(context, listen: false);
-    return StreamBuilder<List<InstancesPingStatus>>(
-      // listen to the stream of ping statuses
-      stream: repository.watchAllInstancePingStatuses(),
-      builder: ((context, AsyncSnapshot<List<InstancesPingStatus>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          final statuses = snapshot.data ?? [];
-          // get all instances
-          return FutureBuilder(
-            future: repository.getAllInstances(),
-            builder: ((context, snapshot) {
-              if (snapshot.hasData && statuses.isNotEmpty) {
-                final instances = snapshot.data ?? [];
-                final instanceCards = <InstanceCardModel>[];
-
-                // find the latest ping status of each instance
-                for (var instance in instances) {
-                  //  find all ping statuses of this instance
-                  final thisInstanceStatuses = <InstancesPingStatus>[];
-                  for (var status in statuses) {
-                    status.instanceId == instance.id
-                        ? thisInstanceStatuses.add(status)
-                        : [];
-                  }
-
-                  if (thisInstanceStatuses.isNotEmpty) {
-                    // sort the list of statuses according to date
-                    thisInstanceStatuses
-                        .sort(((a, b) => a.pingTime.compareTo(b.pingTime)));
-                    // get the latest status
-                    final currentStatus = thisInstanceStatuses.last;
-
-                    // add both instance and the status code to instance card model
-                    instanceCards.add(InstanceCardModel(
-                        instanceId: instance.id!,
-                        instanceUrl: instance.instanceUrl,
-                        instanceName: instance.instanceName,
-                        instanceStatusCode: currentStatus.statusCode));
-                  }
-                }
-
-                return ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: instanceCards.length,
-                    itemBuilder: ((context, index) {
-                      final card = instanceCards[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => InstanceDetails(
-                                    instance: Instance(
-                                      id: card.instanceId,
-                                      instanceName: card.instanceName,
-                                      instanceUrl: card.instanceUrl,
-                                    ),
-                                  )),
-                            ),
-                          );
-                        },
-                        child: InstanceCard(
-                            instanceName: card.instanceName,
-                            instanceStatusCode: card.instanceStatusCode),
-                      );
-                    }));
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              }
-              return Container();
-            }),
-          );
-        }
-        return Container();
+  Widget buildInstanceList(List<InstanceCardModel> instanceCards) {
+    return ListView.builder(
+      primary: false,
+      shrinkWrap: true,
+      itemCount: instanceCards.length,
+      itemBuilder: ((context, index) {
+        final card = instanceCards[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: ((context) => InstanceDetails(
+                      instance: Instance(
+                        id: card.instanceId,
+                        instanceName: card.instanceName,
+                        instanceUrl: card.instanceUrl,
+                      ),
+                    )),
+              ),
+            );
+          },
+          child: InstanceCard(
+              instanceName: card.instanceName,
+              instanceStatusCode: card.instanceStatusCode),
+        );
       }),
     );
   }
