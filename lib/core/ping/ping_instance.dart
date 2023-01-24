@@ -38,7 +38,7 @@ class PingInstance {
     }
   }
 
-  void pingInstance(Instance instance) async {
+  pingInstance(Instance instance) async {
     // ping an instance
     var url = Uri.parse(instance.instanceUrl);
     var request = http.Request('GET', url);
