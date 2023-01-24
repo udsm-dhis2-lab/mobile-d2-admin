@@ -1,4 +1,4 @@
- import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
 import '../../models/index.dart';
 import '../../database/repository.dart';
@@ -32,9 +32,32 @@ class PingInstance {
               instanceId: instance.id!,
               statusCode: error.toString(),
               pingTime: DateTime.now());
-              repository.addInstancePingStatus(status);
+          repository.addInstancePingStatus(status);
         }
       }
+    }
+  }
+
+  void pingInstance(Instance instance) async {
+    // ping an instance
+    var url = Uri.parse(instance.instanceUrl);
+    var request = http.Request('GET', url);
+
+    try {
+      var response = await request.send();
+      // create a new InstancePingStatus
+      final status = InstancesPingStatus(
+          instanceId: instance.id!,
+          statusCode: response.statusCode.toString(),
+          pingTime: DateTime.now());
+      // add it to the database
+      repository.addInstancePingStatus(status);
+    } catch (error) {
+      final status = InstancesPingStatus(
+          instanceId: instance.id!,
+          statusCode: error.toString(),
+          pingTime: DateTime.now());
+      repository.addInstancePingStatus(status);
     }
   }
 }
