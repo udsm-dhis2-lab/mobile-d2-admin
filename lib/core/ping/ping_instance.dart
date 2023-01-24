@@ -51,6 +51,7 @@ class PingInstance {
           statusCode: response.statusCode.toString(),
           pingTime: DateTime.now());
       // add it to the database
+
       repository.addInstancePingStatus(status);
     } catch (error) {
       final status = InstancesPingStatus(
