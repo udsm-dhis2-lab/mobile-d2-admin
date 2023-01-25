@@ -6,6 +6,14 @@ import '/config/theme_config.dart';
 import 'widgets/index.dart';
 import '/database/repository.dart';
 import '/models/instances_ping_statuses.dart';
+import '/screens/add_instance_screen.dart';
+import '/core/ping/ping_instance.dart';
+
+enum MenuActions {
+  edit,
+  ping,
+  delete,
+}
 
 class InstanceDetails extends StatefulWidget {
   final Instance instance;
@@ -21,6 +29,7 @@ class InstanceDetails extends StatefulWidget {
 class _InstanceDetailsState extends State<InstanceDetails> {
   @override
   Widget build(BuildContext context) {
+    final repository = Provider.of<Repository>(context, listen: false);
     return SafeArea(
         child: Scaffold(
       backgroundColor: AppColors.primaryColor,
@@ -33,6 +42,11 @@ class _InstanceDetailsState extends State<InstanceDetails> {
                 color: AppColors.onPrimaryColor,
               ),
         ),
+        actions: [
+          buildMenuButton(
+            repository,
+          )
+        ],
       ),
       body: Container(
           padding:
@@ -48,6 +62,73 @@ class _InstanceDetailsState extends State<InstanceDetails> {
           ),
           child: _buildInstanceDetailScreen(context, widget.instance.id!)),
     ));
+  }
+
+  Widget buildMenuButton(Repository repository) {
+    return PopupMenuButton(
+      onSelected: ((value) {
+        switch (value) {
+          case MenuActions.edit:
+            {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: ((context) => AddInstanceScreen(
+                        instance: widget.instance,
+                      )),
+                ),
+              );
+            }
+            break;
+          case MenuActions.ping:
+            {
+              final ping = PingInstance(repository: repository);
+              ping.pingInstance(widget.instance);
+            }
+            break;
+
+          case MenuActions.delete:
+            {
+              repository.removeInstance(widget.instance);
+              Navigator.pop(context);
+            }
+        }
+      }),
+      itemBuilder: ((context) {
+        return <PopupMenuEntry>[
+          PopupMenuItem(
+            value: MenuActions.edit,
+            child: Text(
+              'Edit item',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
+            ),
+          ),
+          PopupMenuItem(
+            value: MenuActions.ping,
+            child: Text(
+              'Ping item',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
+            ),
+          ),
+          PopupMenuItem(
+            value: MenuActions.delete,
+            child: Text(
+              'Delete item',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
+            ),
+          )
+        ];
+      }),
+    );
   }
 
   Widget buildListHeader(BuildContext context) {
