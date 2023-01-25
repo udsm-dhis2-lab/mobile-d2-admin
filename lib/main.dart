@@ -91,10 +91,10 @@ class _D2AdminState extends State<D2Admin> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<Repository>(
+        ChangeNotifierProvider<Repository>(
           lazy: false,
           create: (_) => repository,
-          dispose: (_, Repository repository) => dispose(),
+          // dispose: (_, Repository repository) => dispose(),
         )
       ],
       child: MaterialApp(

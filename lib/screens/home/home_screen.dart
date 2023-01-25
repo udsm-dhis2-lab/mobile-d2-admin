@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double topPadding,
     double elementsWidth,
   ) {
-    final repository = Provider.of<Repository>(context, listen: false);
+    final repository = Provider.of<Repository>(context, listen: true);
     return StreamBuilder<List<InstancesPingStatus>>(
       // listen to the stream of ping statuses
       stream: repository.watchAllInstancePingStatuses(),

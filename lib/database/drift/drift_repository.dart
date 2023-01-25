@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
+
 import '../../models/index.dart';
 import 'drift_instances_database.dart';
 import '../repository.dart';
 
-class DriftRepository implements Repository {
+class DriftRepository with ChangeNotifier implements Repository {
   late DriftInstancesDatabase driftInstancesDatabase;
   late InstancesDao _instancesDao;
   late InstancesPingStatusDao _instancesPingStatusDao;
@@ -67,6 +69,7 @@ class DriftRepository implements Repository {
           instanceUrl: instance.instanceUrl);
 
       await _instancesDao.updateInstance(driftInstance);
+      notifyListeners();
     });
   }
 
@@ -74,6 +77,7 @@ class DriftRepository implements Repository {
   Future removeInstance(Instance instance) {
     return Future(() async {
       await _instancesDao.removeInstance(instance.id!);
+      notifyListeners();
     });
   }
 
@@ -122,7 +126,8 @@ class DriftRepository implements Repository {
     final instancesPingStatuses = <InstancesPingStatus>[];
 
     for (var driftInstancePingStatus in driftInstancePingStatuses) {
-      instancesPingStatuses.add(driftInstancesPingStatusToInstancesPingStatus(driftInstancePingStatus));
+      instancesPingStatuses.add(driftInstancesPingStatusToInstancesPingStatus(
+          driftInstancePingStatus));
     }
     return instancesPingStatuses;
   }

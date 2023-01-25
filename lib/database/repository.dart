@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 import '../models/index.dart';
 
-abstract class Repository {
+abstract class Repository extends ChangeNotifier{
   Future init();
 
   void close();
