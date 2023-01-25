@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_d2_admin/core/ping/ping_instance.dart';
 import 'package:provider/provider.dart';
 
 import '/widgets/custom_material_button.dart';
 import '/config/theme_config.dart';
 import '/database/repository.dart';
 import '/models/index.dart';
+import '/core/ping/ping_instance.dart';
 
 class AddInstanceScreen extends StatefulWidget {
-  const AddInstanceScreen({super.key});
+  final Instance? instance;
+  final bool isUpdating;
+
+  const AddInstanceScreen({super.key, this.instance})
+      : isUpdating = (instance != null);
 
   @override
   State<AddInstanceScreen> createState() => _AddInstanceScreenState();
@@ -23,6 +27,15 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
   final TextEditingController instanceUrlController = TextEditingController();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isUpdating) {
+      instanceNameController.text = widget.instance!.instanceName;
+      instanceUrlController.text = widget.instance!.instanceUrl;
+    }
+  }
 
   @override
   void dispose() {
@@ -45,7 +58,7 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
           elevation: 0.0,
           backgroundColor: AppColors.primaryColor,
           title: Text(
-            'Add Instance',
+            widget.isUpdating ? 'Update Instance' : 'Add Instance',
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppColors.onPrimaryColor,
                 ),
@@ -168,26 +181,14 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
             ),
             const SizedBox(height: 33),
             CustomMaterialButton(
-                size: size,
-                label: 'Save',
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    final instance = Instance(
-                      instanceName: instanceNameController.text,
-                      instanceUrl: instanceUrlController.text,
-                    );
-                    final id = await repository.addInstance(instance);
-                    await ping.pingInstance(
-                      Instance(
-                          id: id,
-                          instanceName: instanceNameController.text,
-                          instanceUrl: instanceUrlController.text),
-                    );
-                    // check if not mounted to avoid asychronous gaps after async function
-                    if (!mounted) return;
-                    Navigator.pop(context);
-                  }
-                })
+              size: size,
+              label: 'Save',
+              onPressed: (() {
+                widget.isUpdating
+                    ? updateInstance(repository, ping)
+                    : addInstance(repository, ping);
+              }),
+            )
           ],
         ),
       ),
@@ -240,5 +241,38 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
         // },
       ),
     );
+  }
+
+  void addInstance(Repository repository, PingInstance ping) async {
+    if (_formKey.currentState!.validate()) {
+      final instance = Instance(
+        instanceName: instanceNameController.text,
+        instanceUrl: instanceUrlController.text,
+      );
+      final id = await repository.addInstance(instance);
+      await ping.pingInstance(
+        Instance(
+            id: id,
+            instanceName: instanceNameController.text,
+            instanceUrl: instanceUrlController.text),
+      );
+      // check if not mounted to avoid asychronous gaps after async function
+      if (!mounted) return;
+      Navigator.pop(context);
+    }
+  }
+
+  void updateInstance(Repository repository, PingInstance ping) async {
+    if (_formKey.currentState!.validate()) {
+      final instance = Instance(
+        id: widget.instance!.id,
+        instanceName: instanceNameController.text,
+        instanceUrl: instanceUrlController.text,
+      );
+      await repository.updateInstance(instance);
+      // check if not mounted to avoid asychronous gaps after async function
+      if (!mounted) return;
+      Navigator.pop(context);
+    }
   }
 }
