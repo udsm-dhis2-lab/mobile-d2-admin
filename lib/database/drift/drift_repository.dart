@@ -161,6 +161,7 @@ class DriftRepository with ChangeNotifier implements Repository {
       await _instancesPingStatusDao.removeInstancePingStatus(removedStatus.id!);
       final id = await _instancesPingStatusDao.addInstancePingStatus(
           instancesPingStatusToDriftInstancesPingStatus(status));
+      notifyListeners();
       return id;
     });
   }
