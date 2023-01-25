@@ -6,13 +6,12 @@ class OnlineInstanceSummaryCard extends StatelessWidget {
   final double height;
   final int onlineInstances;
   final int totalInstances;
-  const OnlineInstanceSummaryCard({
-    super.key,
-    required this.width,
-    required this.height,
-    required this.onlineInstances,
-    required this.totalInstances
-  });
+  const OnlineInstanceSummaryCard(
+      {super.key,
+      required this.width,
+      required this.height,
+      required this.onlineInstances,
+      required this.totalInstances});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,8 @@ class OnlineInstanceSummaryCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             LinearProgressIndicator(
-              value: (onlineInstances / totalInstances),
+              value:
+                  (totalInstances == 0 ? 0 : onlineInstances / totalInstances),
               color: AppColors.progressIndicatorColor,
               backgroundColor: AppColors.secondaryColor,
             ),
