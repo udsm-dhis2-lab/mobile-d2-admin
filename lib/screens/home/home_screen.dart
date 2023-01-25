@@ -119,7 +119,15 @@ class _HomeScreenState extends State<HomeScreen> {
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
-              return Container();
+              return buildHomeContents(
+                context: context,
+                size: size,
+                topPadding: topPadding,
+                elementsWidth: elementsWidth,
+                instanceCards: [],
+                onlineInstances: 0,
+                totalInstances: 0,
+              );
             }),
           );
         }
