@@ -46,8 +46,7 @@ class InstancesDao extends DatabaseAccessor<DriftInstancesDatabase>
   }
 
   Future updateInstance(DriftInstance instance) {
-    return (update(driftInstances)..where((tbl) => tbl.id.equals(instance.id)))
-        .replace(instance);
+    return (update(driftInstances)).replace(instance);
   }
 
   Future removeInstance(int instanceId) {
