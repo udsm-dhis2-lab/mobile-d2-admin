@@ -66,11 +66,11 @@ class _InstanceDetailsState extends State<InstanceDetails> {
 
   Widget buildMenuButton(Repository repository) {
     return PopupMenuButton(
-      onSelected: ((value) {
+      onSelected: ((value) async {
         switch (value) {
           case MenuActions.edit:
             {
-              Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: ((context) => AddInstanceScreen(
@@ -78,12 +78,15 @@ class _InstanceDetailsState extends State<InstanceDetails> {
                       )),
                 ),
               );
+              if (!mounted) return;
+              Navigator.pop(context);
             }
             break;
           case MenuActions.ping:
             {
               final ping = PingInstance(repository: repository);
               ping.pingInstance(widget.instance);
+              setState(() {});
             }
             break;
 
