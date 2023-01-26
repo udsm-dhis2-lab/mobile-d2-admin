@@ -35,7 +35,7 @@ class PingStatusCard extends StatelessWidget {
                         .textTheme
                         .titleMedium!
                         .copyWith(color: AppColors.onSurfaceColor),
-                        maxLines: 1,
+                    maxLines: 1,
                   ),
                 ),
               ),
@@ -62,7 +62,7 @@ class PingStatusCard extends StatelessWidget {
                     .copyWith(color: AppColors.textMuted),
               ),
               Text(
-                '4Hrs',
+                timeElapsedSincePing(status.pingTime),
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
@@ -82,5 +82,20 @@ class PingStatusCard extends StatelessWidget {
       return 'Bad Gateway (502)';
     }
     return pingStatusCode;
+  }
+
+  String timeElapsedSincePing(DateTime pingTime) {
+    var now = DateTime.now();
+    var difference = now.difference(pingTime);
+
+    if (difference.inDays > 0) {
+      return "${difference.inDays} Days";
+    } else if (difference.inHours > 0) {
+      return "${difference.inHours} Hrs";
+    } else if (difference.inMinutes > 0) {
+      return "${difference.inMinutes} Minutes";
+    } else {
+      return "${difference.inSeconds} Sec";
+    }
   }
 }
