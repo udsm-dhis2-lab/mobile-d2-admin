@@ -100,30 +100,24 @@ class _InstanceDetailsState extends State<InstanceDetails> {
             value: MenuActions.edit,
             child: Text(
               'Edit item',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
             ),
           ),
           PopupMenuItem(
             value: MenuActions.ping,
             child: Text(
               'Ping item',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
             ),
           ),
           PopupMenuItem(
             value: MenuActions.delete,
             child: Text(
               'Delete item',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
             ),
           )
         ];
@@ -164,7 +158,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
   }
 
   Widget _buildInstanceDetailScreen(BuildContext context, int instanceId) {
-    final repository = Provider.of<Repository>(context, listen: false);
+    final repository = Provider.of<Repository>(context, listen: true);
 
     return FutureBuilder(
       future: repository.getInstancesPingStatusByInstanceId(instanceId),
@@ -236,7 +230,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         }
-        return Container();
+        return const Center(child: Text('No Data'));
       }),
     );
   }
