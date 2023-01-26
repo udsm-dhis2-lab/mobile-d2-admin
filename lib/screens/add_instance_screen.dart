@@ -58,7 +58,7 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
           elevation: 0.0,
           backgroundColor: AppColors.primaryColor,
           title: Text(
-            widget.isUpdating ? 'Update Instance' : 'Add Instance',
+            widget.isUpdating ? 'Edit Instance' : 'Add Instance',
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppColors.onPrimaryColor,
                 ),
