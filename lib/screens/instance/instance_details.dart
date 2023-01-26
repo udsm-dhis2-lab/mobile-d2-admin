@@ -99,7 +99,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
           PopupMenuItem(
             value: MenuActions.edit,
             child: Text(
-              'Edit item',
+              'Edit instance',
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
             ),
@@ -107,7 +107,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
           PopupMenuItem(
             value: MenuActions.ping,
             child: Text(
-              'Ping item',
+              'Ping instance',
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
             ),
@@ -115,7 +115,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
           PopupMenuItem(
             value: MenuActions.delete,
             child: Text(
-              'Delete item',
+              'Delete instance',
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: AppColors.onSurfaceColor, fontWeight: FontWeight.w100),
             ),
