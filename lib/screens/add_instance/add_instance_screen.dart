@@ -23,7 +23,7 @@ class AddInstanceScreen extends StatefulWidget {
 class _AddInstanceScreenState extends State<AddInstanceScreen> {
   static final _formKey = GlobalKey<FormState>();
 
-  List<String> allInstanceNames = <String>[];
+  List<String> allInstancesNames = <String>[];
 
   final TextEditingController instanceNameController = TextEditingController();
   final TextEditingController instanceDetailsController =
@@ -40,10 +40,14 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
       instanceUrlController.text = widget.instance!.instanceUrl;
     }
     //  get all instance names that have been used
+    // change all names to uppercase 
     Future.delayed(Duration.zero, (() {
       final repository = Provider.of<Repository>(context, listen: false);
       setState(() async {
-        allInstanceNames = await allInstancesNames(repository);
+        final names = await getAllInstancesNames(repository);
+        for (var name in names) {
+          allInstancesNames.add(name.toUpperCase());
+        }
       });
     }));
   }
@@ -63,10 +67,12 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
     final Size size = MediaQuery.of(context).size;
     final repository = Provider.of<Repository>(context, listen: false);
     // if we are updating remove the current instance name from already used names
-    final List<String> alreadyAvailableNames = List.from(allInstanceNames);
+    final List<String> alreadyAvailableNames = List.from(allInstancesNames);
     widget.isUpdating
-        ? alreadyAvailableNames.remove(widget.instance!.instanceName)
+        ? alreadyAvailableNames
+            .remove(widget.instance!.instanceName.toUpperCase())
         : alreadyAvailableNames;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
@@ -253,7 +259,7 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
     }
   }
 
-  Future<List<String>> allInstancesNames(Repository repository) async {
+  Future<List<String>> getAllInstancesNames(Repository repository) async {
     final instances = await repository.getAllInstances();
     final instancesNames = <String>[];
 
