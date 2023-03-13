@@ -135,9 +135,9 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
               keyboardType: 'name',
               label: 'Name*',
               validator: (value) {
-                if (alreadyAvailableNames.contains(value)) {
+                if (alreadyAvailableNames.contains(value!.trim())) {
                   return 'This instance name has already been used';
-                } else if (value == null || value.isEmpty) {
+                } else if (value.isEmpty) {
                   return 'This field can not be empty';
                 }
                 return null;
