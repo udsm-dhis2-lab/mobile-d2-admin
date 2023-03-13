@@ -40,14 +40,16 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
       instanceUrlController.text = widget.instance!.instanceUrl;
     }
     //  get all instance names that have been used
-    // change all names to uppercase 
+    // change all names to uppercase
     Future.delayed(Duration.zero, (() {
       final repository = Provider.of<Repository>(context, listen: false);
       setState(() async {
         final names = await getAllInstancesNames(repository);
+        final namesInUpperCase = <String>[];
         for (var name in names) {
-          allInstancesNames.add(name.toUpperCase());
+          namesInUpperCase.add(name.toUpperCase());
         }
+        allInstancesNames = namesInUpperCase;
       });
     }));
   }
@@ -135,7 +137,7 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
               keyboardType: 'name',
               label: 'Name*',
               validator: (value) {
-                if (alreadyAvailableNames.contains(value!.trim())) {
+                if (alreadyAvailableNames.contains(value!.trim().toUpperCase())) {
                   return 'This instance name has already been used';
                 } else if (value.isEmpty) {
                   return 'This field can not be empty';
