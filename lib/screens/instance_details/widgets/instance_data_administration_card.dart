@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_d2_admin/constants/assets_path.dart';
+import 'package:mobile_d2_admin/screens/data_administration/data_administration.dart';
 
 import '/config/theme_config.dart';
 
@@ -45,7 +47,13 @@ class InstanceDataAdministrationCard extends StatelessWidget {
                         side: const BorderSide(
                             color: Color(0xFF6C757D), width: 0.3),
                         borderRadius: BorderRadius.circular(10)),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const DataAdministration()));
+                    },
                     child: Text(
                       'Perform',
                       style: Theme.of(context)
@@ -56,11 +64,9 @@ class InstanceDataAdministrationCard extends StatelessWidget {
               ),
             ],
           ),
-          const Icon(
-            Icons.shield,
-            size: 96,
-            color: Colors.white,
-          )
+          Image.asset(
+            AssetsPath.shield,
+          ),
         ],
       ),
     );

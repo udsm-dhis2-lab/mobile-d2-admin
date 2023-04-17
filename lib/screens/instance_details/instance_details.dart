@@ -30,8 +30,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
   @override
   Widget build(BuildContext context) {
     final repository = Provider.of<Repository>(context, listen: false);
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         elevation: 0.0,
@@ -61,7 +60,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
             ),
           ),
           child: _buildInstanceDetailScreen(context, widget.instance.id!)),
-    ));
+    );
   }
 
   Widget buildMenuButton(Repository repository) {
