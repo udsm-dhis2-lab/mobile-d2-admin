@@ -1,3 +1,4 @@
+
 class AssetsPath {
   static const shield = 'assets/images/Protect.png';
   static const logo = 'assets/images/dhis21.png';
@@ -5,4 +6,6 @@ class AssetsPath {
   static const resources = 'assets/images/NAS.png';
   static const maintainance = 'assets/images/DataQuality.png';
   static const analytics = 'assets/images/DatabaseAdministrator.png';
+  static const person = 'assets/images/person.png';
+  static const bell = 'assets/images/bell.png';
 }

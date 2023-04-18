@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_d2_admin/constants/assets_path.dart';
 import 'package:mobile_d2_admin/models/index.dart';
 import 'package:provider/provider.dart';
 
@@ -152,6 +153,17 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           color: AppColors.primaryColor,
           height: size.height * 0.3,
+        ),
+       const Positioned.fill(
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Image(
+                image: AssetImage(AssetsPath.bell),
+              ),
+            ),
+          ),
         ),
         Positioned.fill(
           top: topPadding,

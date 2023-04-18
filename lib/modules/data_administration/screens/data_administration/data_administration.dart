@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:mobile_d2_admin/constants/assets_path.dart';
+import 'package:mobile_d2_admin/modules/data_administration/screens/analytics/analytics.dart';
 import 'package:mobile_d2_admin/modules/data_administration/screens/data_administration/widgets/data_administration_dashboard.dart';
 import 'package:mobile_d2_admin/modules/data_administration/screens/data_administration/widgets/operation_card.dart';
+import 'package:mobile_d2_admin/modules/data_administration/screens/maintainance/maintainance.dart';
+import 'package:mobile_d2_admin/modules/data_administration/screens/resource/resource.dart';
 import '../../../../config/theme_config.dart';
 
 class DataAdministration extends StatelessWidget {
@@ -39,14 +42,14 @@ class DataAdministration extends StatelessWidget {
           children: [
             const DataAdministrationDashBoard(),
             const SizedBox(height: 24),
-            buildOperationCardList()
+            buildOperationCardList(context)
           ],
         ),
       ),
     );
   }
 
-  Widget buildOperationCardList() {
+  Widget buildOperationCardList(BuildContext context) {
     return GridView(
       shrinkWrap: true,
       primary: false,
@@ -56,10 +59,26 @@ class DataAdministration extends StatelessWidget {
         mainAxisSpacing: 22,
       ),
       children: const [
-        OperationCard(imageUrl: AssetsPath.maintainance, label: 'Maintainance'),
-        OperationCard(imageUrl: AssetsPath.schedule, label: 'Scheduler'),
-        OperationCard(imageUrl: AssetsPath.resources, label: 'Resource'),
-        OperationCard(imageUrl: AssetsPath.maintainance, label: 'Analytics'),
+        OperationCard(
+          imageUrl: AssetsPath.maintainance,
+          label: 'Maintainance',
+          screen: Maintainance(),
+        ),
+        OperationCard(
+          imageUrl: AssetsPath.schedule,
+          label: 'Scheduler',
+          screen: Maintainance(),
+        ),
+        OperationCard(
+          imageUrl: AssetsPath.resources,
+          label: 'Resource',
+          screen: Resource(),
+        ),
+        OperationCard(
+          imageUrl: AssetsPath.analytics,
+          label: 'Analytics',
+          screen: Analytics(),
+        ),
       ],
     );
   }
