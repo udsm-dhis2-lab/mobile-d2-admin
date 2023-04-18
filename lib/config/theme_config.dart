@@ -25,4 +25,5 @@ class AppColors {
   static const infoColor = Color(0xFFD4EDDA);
   static const onInfoColor = Color(0xFF155724);
   static const appGreyColor = Color(0xFFF3F3F3);
+  static const appDarkGreyColor = Color(0xFF6C757D);
 }

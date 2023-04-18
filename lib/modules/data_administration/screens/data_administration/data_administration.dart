@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:mobile_d2_admin/constants/assets_path.dart';
-import '../../config/theme_config.dart';
+import 'package:mobile_d2_admin/modules/data_administration/screens/data_administration/widgets/data_administration_dashboard.dart';
+import 'package:mobile_d2_admin/modules/data_administration/screens/data_administration/widgets/operation_card.dart';
+import '../../../../config/theme_config.dart';
 
 class DataAdministration extends StatelessWidget {
   const DataAdministration({super.key});
@@ -35,24 +36,31 @@ class DataAdministration extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: [buildDataAdministrationDashBoard()],
+          children: [
+            const DataAdministrationDashBoard(),
+            const SizedBox(height: 24),
+            buildOperationCardList()
+          ],
         ),
       ),
     );
   }
 
-  Widget buildDataAdministrationDashBoard() {
-    return Container(
-      height: 175,
-      padding: const EdgeInsets.only(left: 18, top: 11, bottom: 11, right: 18),
-      decoration: BoxDecoration(
-        color: AppColors.surfaceColor,
-        borderRadius: BorderRadius.circular(10),
+  Widget buildOperationCardList() {
+    return GridView(
+      shrinkWrap: true,
+      primary: false,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 22,
+        mainAxisSpacing: 22,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Image.asset(AssetsPath.logo)],
-      ),
+      children: const [
+        OperationCard(imageUrl: AssetsPath.maintainance, label: 'Maintainance'),
+        OperationCard(imageUrl: AssetsPath.schedule, label: 'Scheduler'),
+        OperationCard(imageUrl: AssetsPath.resources, label: 'Resource'),
+        OperationCard(imageUrl: AssetsPath.maintainance, label: 'Analytics'),
+      ],
     );
   }
 }

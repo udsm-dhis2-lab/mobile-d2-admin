@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_d2_admin/constants/assets_path.dart';
-import 'package:mobile_d2_admin/screens/data_administration/data_administration.dart';
 
+import '../../data_administration/screens/data_administration/data_administration.dart';
 import '/config/theme_config.dart';
 
 class InstanceDataAdministrationCard extends StatelessWidget {
