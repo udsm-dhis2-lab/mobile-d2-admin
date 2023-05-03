@@ -3,7 +3,7 @@
 
 A mobile app to perfom maintenance for dhis2 instances 
 
-## Getting Started
+## Prerequisite
 
 Mobile d2 is a Flutter application 
 
@@ -17,7 +17,11 @@ Run command `flutter pub get` to Install all package dependencies for this proje
 
 Run command `sh .\database_builder.sh` for d2touch sdk to create a database
 
-Make sure that you have connected your pc with a real phone or an emulator to allow debugging 
+Make sure that you have connected your pc with a real phone or an emulator to allow debugging, follow this guide below 
+
+- [Devices](https://docs.flutter.dev/get-started/install)
+
+## Getting started
 
 Run command `flutter run`
 
