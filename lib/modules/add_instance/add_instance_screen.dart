@@ -158,61 +158,61 @@ class _AddInstanceScreenState extends State<AddInstanceScreen> {
               label: 'Url*',
             ),
             const SizedBox(height: 52),
-            Text(
-              'Instance Credentials',
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  color: AppColors.onSurfaceColor, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              'Provide your credentials to this dhis instance',
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                    color: AppColors.textMuted,
-                  ),
-            ),
-            const SizedBox(height: 24),
-            CustomFormField(
-              controller: userNameController,
-              keyboardType: 'name',
-              label: 'Username',
-            ),
-            const SizedBox(height: 24),
-            CustomFormField(
-              controller: passwordController,
-              keyboardType: 'password',
-              label: 'Password',
-            ),
-            const SizedBox(height: 50),
-            Container(
-              constraints: const BoxConstraints.expand(height: 69),
-              padding: const EdgeInsets.only(
-                  top: 20, bottom: 19, right: 22, left: 17.75),
-              decoration: BoxDecoration(
-                  color: AppColors.infoColor,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(
-                    Icons.info_outline,
-                    color: AppColors.onInfoColor,
-                    size: 37.5,
-                  ),
-                  const SizedBox(width: 18.75),
-                  Expanded(
-                    child: Text(
-                      'Providing username and password to dhis instance gives you more functionalities',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(color: AppColors.onInfoColor, fontSize: 12),
-                      maxLines: 4,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 33),
+            // Text(
+            //   'Instance Credentials',
+            //   style: Theme.of(context).textTheme.titleMedium!.copyWith(
+            //       color: AppColors.onSurfaceColor, fontWeight: FontWeight.w600),
+            // ),
+            // const SizedBox(height: 6),
+            // Text(
+            //   'Provide your credentials to this dhis instance',
+            //   style: Theme.of(context).textTheme.titleSmall!.copyWith(
+            //         color: AppColors.textMuted,
+            //       ),
+            // ),
+            // const SizedBox(height: 24),
+            // CustomFormField(
+            //   controller: userNameController,
+            //   keyboardType: 'name',
+            //   label: 'Username',
+            // ),
+            // const SizedBox(height: 24),
+            // CustomFormField(
+            //   controller: passwordController,
+            //   keyboardType: 'password',
+            //   label: 'Password',
+            // ),
+            // const SizedBox(height: 50),
+            // Container(
+            //   constraints: const BoxConstraints.expand(height: 69),
+            //   padding: const EdgeInsets.only(
+            //       top: 20, bottom: 19, right: 22, left: 17.75),
+            //   decoration: BoxDecoration(
+            //       color: AppColors.infoColor,
+            //       borderRadius: BorderRadius.circular(10)),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       const Icon(
+            //         Icons.info_outline,
+            //         color: AppColors.onInfoColor,
+            //         size: 37.5,
+            //       ),
+            //       const SizedBox(width: 18.75),
+            //       Expanded(
+            //         child: Text(
+            //           'Providing username and password to dhis instance gives you more functionalities',
+            //           style: Theme.of(context)
+            //               .textTheme
+            //               .bodySmall!
+            //               .copyWith(color: AppColors.onInfoColor, fontSize: 12),
+            //           maxLines: 4,
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(height: 33),
             CustomMaterialButton(
               size: size,
               label: 'Save',

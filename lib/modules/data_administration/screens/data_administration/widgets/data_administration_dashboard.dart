@@ -4,7 +4,15 @@ import '../../../../../config/theme_config.dart';
 import '../../../../../constants/assets_path.dart';
 
 class DataAdministrationDashBoard extends StatelessWidget {
-  const DataAdministrationDashBoard({super.key});
+  final String version;
+  final String lastAnalytics;
+  final String runtime;
+  const DataAdministrationDashBoard({
+    super.key,
+    required this.lastAnalytics,
+    required this.runtime,
+    required this.version,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +31,12 @@ class DataAdministrationDashBoard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildRowOfStatsInDashBoard('Version', '2.36.6', context),
+              buildRowOfStatsInDashBoard('Version', version, context),
               const SizedBox(height: 14),
               buildRowOfStatsInDashBoard(
-                  'Last Analytics', 'July 24, 2022, 01:00', context),
+                  'Last Analytics', lastAnalytics, context),
               const SizedBox(height: 14),
-              buildRowOfStatsInDashBoard('Runtime', '01:54:22.125', context),
+              buildRowOfStatsInDashBoard('Runtime', runtime, context),
             ],
           )
         ],

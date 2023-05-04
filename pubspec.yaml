@@ -46,6 +46,8 @@ dependencies:
   provider: ^6.0.5
   google_fonts: ^3.0.1
   intl: ^0.18.0
+  d2_touch:
+    path: /Users/Yuseif/flutter-projects/d2-touch
 
 dev_dependencies:
   flutter_test:

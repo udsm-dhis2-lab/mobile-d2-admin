@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_d2_admin/constants/assets_path.dart';
 
-import '../../data_administration/screens/data_administration/data_administration.dart';
+import 'package:mobile_d2_admin/constants/assets_path.dart';
+import 'package:mobile_d2_admin/core/auth/login/login.dart';
 import '/config/theme_config.dart';
 
 class InstanceDataAdministrationCard extends StatelessWidget {
-  const InstanceDataAdministrationCard({super.key});
+  final String instanceUrl;
+  const InstanceDataAdministrationCard({super.key, required this.instanceUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +52,9 @@ class InstanceDataAdministrationCard extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const DataAdministration()));
+                              builder: (context) => Login(
+                                    instanceUrl: instanceUrl,
+                                  )));
                     },
                     child: Text(
                       'Perform',

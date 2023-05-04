@@ -4,8 +4,8 @@ import 'package:mobile_d2_admin/widgets/custom_material_button.dart';
 
 import '../../../../config/theme_config.dart';
 
-class Maintainance extends StatelessWidget {
-  const Maintainance({super.key});
+class Maintenance extends StatelessWidget {
+  const Maintenance({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class Maintainance extends StatelessWidget {
         elevation: 0.0,
         backgroundColor: AppColors.primaryColor,
         title: Text(
-          'Maintainance',
+          'Maintenance',
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: AppColors.onPrimaryColor,
               ),
@@ -64,7 +64,7 @@ class Maintainance extends StatelessWidget {
             ),
             CustomMaterialButton(
               size: size,
-              label: 'Perform Maintainance',
+              label: 'Perform Maintenance',
               onPressed: () {},
             )
           ],

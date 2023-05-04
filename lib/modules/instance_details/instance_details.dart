@@ -59,7 +59,11 @@ class _InstanceDetailsState extends State<InstanceDetails> {
               topRight: Radius.circular(20),
             ),
           ),
-          child: _buildInstanceDetailScreen(context, widget.instance.id!)),
+          child: _buildInstanceDetailScreen(
+            context,
+            widget.instance.id!,
+            widget.instance.instanceUrl,
+          )),
     );
   }
 
@@ -159,7 +163,8 @@ class _InstanceDetailsState extends State<InstanceDetails> {
     );
   }
 
-  Widget _buildInstanceDetailScreen(BuildContext context, int instanceId) {
+  Widget _buildInstanceDetailScreen(
+      BuildContext context, int instanceId, String instanceUrl) {
     final repository = Provider.of<Repository>(context, listen: true);
 
     return FutureBuilder(
@@ -204,7 +209,7 @@ class _InstanceDetailsState extends State<InstanceDetails> {
                   pingStatusCode: latestPingStatusCode,
                 ),
                 const SizedBox(height: 24),
-                const InstanceDataAdministrationCard(),
+                InstanceDataAdministrationCard(instanceUrl: instanceUrl),
                 const SizedBox(height: 32),
                 buildListHeader(context),
                 const SizedBox(height: 16),

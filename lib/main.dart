@@ -1,14 +1,19 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:flutter/foundation.dart';
 
+
+import 'package:workmanager/workmanager.dart';
+import 'package:provider/provider.dart';
+import 'package:mobile_d2_admin/constants/app_constants.dart';
+import 'package:d2_touch/d2_touch.dart';
 import '/core/ping/foreground_pinging.dart';
 import '/core/ping/ping_instance.dart';
 import '/database/drift/drift_repository.dart';
 import '/database/repository.dart';
 import 'package:mobile_d2_admin/config/light_theme.dart';
 import 'package:mobile_d2_admin/modules/home/home_screen.dart';
+import 'main.reflectable.dart';
+
 
 final repository = DriftRepository();
 
@@ -30,6 +35,9 @@ void callbackDispatcher() {
 }
 
 void main() async {
+    initializeReflectable();
+  WidgetsFlutterBinding.ensureInitialized();
+  d2repository = await D2Touch.init();
   await repository.init();
   runApp(D2Admin(
     repository: repository,
