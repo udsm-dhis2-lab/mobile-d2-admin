@@ -56,12 +56,22 @@ class _AnalyticsState extends State<Analytics> {
                 ),
                 child: ListView(
                   children: [
-                    CustomCheckBox(action: 'Skip generation of aggregate'),
                     CustomCheckBox(
-                        action: 'Skip generation of resource tables'),
-                    CustomCheckBox(action: 'Skip generation of event data'),
+                      actionLabel: 'Skip generation of aggregate',
+                      action: '',
+                    ),
                     CustomCheckBox(
-                        action: 'Skip generation of enrollment data'),
+                      actionLabel: 'Skip generation of resource tables',
+                      action: '',
+                    ),
+                    CustomCheckBox(
+                      actionLabel: 'Skip generation of event data',
+                      action: '',
+                    ),
+                    CustomCheckBox(
+                      actionLabel: 'Skip generation of enrollment data',
+                      action: '',
+                    ),
                     const SizedBox(
                       height: 40,
                     ),
@@ -105,8 +115,8 @@ class _AnalyticsState extends State<Analytics> {
                 errorStyle:
                     const TextStyle(color: Colors.redAccent, fontSize: 16.0),
                 hintText: 'last year',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0))),
             isEmpty: dropdownValue == '',
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(

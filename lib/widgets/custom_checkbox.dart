@@ -5,11 +5,13 @@ import '../config/theme_config.dart';
 // ignore: must_be_immutable
 class CustomCheckBox extends StatefulWidget {
   bool? isChecked;
+  final String actionLabel;
   final String action;
   CustomCheckBox({
     super.key,
     this.isChecked,
-    required this.action,
+    required this.actionLabel,
+    required this.action
   }) {
     isChecked = isChecked ?? false;
   }
@@ -31,7 +33,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
         });
       },
       title: Text(
-        widget.action,
+        widget.actionLabel,
         style: Theme.of(context)
             .textTheme
             .titleMedium!

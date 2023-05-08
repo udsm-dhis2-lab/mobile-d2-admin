@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_d2_admin/widgets/custom_material_button.dart';
 
+import 'package:mobile_d2_admin/widgets/custom_material_button.dart';
 import '../../../../config/theme_config.dart';
+import '../../../../constants/assets_path.dart';
+import '../../../../utils/services/rest_apis/data_administration_api.dart';
+import '../../widgets/process_status.dart';
 
 class Resource extends StatelessWidget {
   const Resource({super.key});
@@ -65,7 +68,9 @@ class Resource extends StatelessWidget {
             CustomMaterialButton(
               size: size,
               label: 'Generate Tables',
-              onPressed: () {},
+              onPressed: () {
+                showGenerateResourceTableProcess(context, size);
+              },
             )
           ],
         ),
@@ -84,5 +89,60 @@ class Resource extends StatelessWidget {
             .copyWith(color: AppColors.onSurfaceColor),
       ),
     );
+  }
+
+  Future<dynamic> showGenerateResourceTableProcess(
+      BuildContext context, Size size) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: AppColors.surfaceColor),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: StreamBuilder<Map<String, dynamic>>(
+                    stream: DataAdministrationApi.generateTables({}),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        // return ProcessStatus(
+                        //   imagePath: AssetsPath.complete,
+                        //   processStatus: 'Successful',
+                        //   process: 'maintenance was performed successful',
+                        //   size: size,
+                        //   onPressed: () {
+                        //     Navigator.pop(context);
+                        //   },
+                        // );
+
+                        return Text(snapshot.data.toString());
+                      } else if (snapshot.hasError) {
+                        return ProcessStatus(
+                          imagePath: AssetsPath.error,
+                          processStatus: 'Failed',
+                          process: snapshot.error.toString(),
+                          size: size,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        );
+                      } else {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            CircularProgressIndicator(
+                              color: AppColors.primaryColor,
+                            ),
+                          ],
+                        );
+                      }
+                    }),
+              ),
+            ),
+          );
+        });
   }
 }

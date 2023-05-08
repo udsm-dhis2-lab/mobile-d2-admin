@@ -7,7 +7,6 @@ class DataAdministrationApi {
   const DataAdministrationApi({required this.instanceUrl});
 
   static Future<Map<String, String>> getInstanceInfo() async {
-    
     final response = await d2repository.httpClient.get('system/info.json');
 
     if (response.statusCode == 200) {
@@ -22,11 +21,17 @@ class DataAdministrationApi {
     }
   }
 
-  static Future<String> performMaintenance(dynamic data) async {
+  static Future performMaintenance(dynamic data) async {
     final response = await d2repository.httpClient.post('maintenance', data);
 
+    // try {
+    //   await d2repository.httpClient.post('maintenance', data);
+    // } catch (e) {
+    //   rethrow;
+    // }
+
     if (response.statusCode == 200) {
-      return 'Success';
+      return response.statusCode.toString();
     } else {
       throw Exception('Failed to perform maintainance');
     }
@@ -41,7 +46,7 @@ class DataAdministrationApi {
 
       yield* recursiveGetStream(url);
     } else {
-      throw Exception('Failed to make generate Tabkes');
+      throw Exception('Failed to generate resource tables');
     }
   }
 
@@ -55,7 +60,7 @@ class DataAdministrationApi {
 
       yield* recursiveGetStream(url);
     } else {
-      throw Exception('Failed to make generate Tables');
+      throw Exception('Failed to run analytics');
     }
   }
 
@@ -70,7 +75,7 @@ class DataAdministrationApi {
 
       if (!completed) {
         final newUrl = jsonResponse['relativeNotifierEndpoint'] as String;
-        recursiveGetStream(newUrl);
+      yield*  recursiveGetStream(newUrl);
       }
     } else {
       throw Exception('Failed to make get request');

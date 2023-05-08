@@ -8,4 +8,6 @@ class AssetsPath {
   static const analytics = 'assets/images/DatabaseAdministrator.png';
   static const person = 'assets/images/person.png';
   static const bell = 'assets/images/bell.png';
+  static const complete = 'assets/images/complete.png';
+  static const error = 'assets/images/error.png';
 }
