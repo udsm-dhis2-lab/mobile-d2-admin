@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:mobile_d2_admin/constants/api_path.dart';
 import 'package:mobile_d2_admin/constants/app_constants.dart';
 
 class DataAdministrationApi {
@@ -7,7 +6,7 @@ class DataAdministrationApi {
   const DataAdministrationApi({required this.instanceUrl});
 
   static Future<Map<String, String>> getInstanceInfo() async {
-    final response = await d2repository.httpClient.get('system/info.json');
+    final response = await d2repository.httpClient.get(systemInfo);
 
     if (response.statusCode == 200) {
       final data = response.body;
@@ -22,13 +21,7 @@ class DataAdministrationApi {
   }
 
   static Future performMaintenance(dynamic data) async {
-    final response = await d2repository.httpClient.post('maintenance', data);
-
-    // try {
-    //   await d2repository.httpClient.post('maintenance', data);
-    // } catch (e) {
-    //   rethrow;
-    // }
+    final response = await d2repository.httpClient.post(maintenance, data);
 
     if (response.statusCode == 200) {
       return response.statusCode.toString();
@@ -37,12 +30,15 @@ class DataAdministrationApi {
     }
   }
 
-  static Stream<Map<String, dynamic>> generateTables(dynamic data) async* {
-    final response = await d2repository.httpClient.post('resourceTables', data);
+  static Stream<List<dynamic>> generateTables(
+      dynamic data) async* {
+    final response = await d2repository.httpClient.post(resourceTables, data);
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      final url = jsonResponse['url'] as String;
+      final jsonResponse = response.body;
+
+      final url =
+          jsonResponse['response']['relativeNotifierEndpoint'] as String;
 
       yield* recursiveGetStream(url);
     } else {
@@ -50,13 +46,14 @@ class DataAdministrationApi {
     }
   }
 
-  static Stream<Map<String, dynamic>> runAnalytics(dynamic data) async* {
+  static Stream<List<dynamic>> runAnalytics(dynamic data) async* {
     final response =
-        await d2repository.httpClient.post('resourceTables/analytics', data);
+        await d2repository.httpClient.post(analytics, data);
 
     if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(response.body);
-      final url = jsonResponse['url'] as String;
+      final jsonResponse = response.body;
+      final url =
+          jsonResponse['response']['relativeNotifierEndpoint'] as String;
 
       yield* recursiveGetStream(url);
     } else {
@@ -64,21 +61,24 @@ class DataAdministrationApi {
     }
   }
 
-  static Stream<Map<String, dynamic>> recursiveGetStream(String url) async* {
-    final response = await d2repository.httpClient.get(url);
+  static Stream<List<dynamic>> recursiveGetStream(
+      String url) async* {
+    final getUrl = url.replaceAll('/api/', '');
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      final completed = jsonResponse['completed'] as bool;
+    try {
+      final response = await d2repository.httpClient.get(getUrl);
+
+      final List<dynamic> jsonResponse = response.body;
+      
+      final completed = jsonResponse[0]['completed'] as bool;
 
       yield jsonResponse;
 
       if (!completed) {
-        final newUrl = jsonResponse['relativeNotifierEndpoint'] as String;
-      yield*  recursiveGetStream(newUrl);
+        yield* recursiveGetStream(getUrl);
       }
-    } else {
-      throw Exception('Failed to make get request');
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

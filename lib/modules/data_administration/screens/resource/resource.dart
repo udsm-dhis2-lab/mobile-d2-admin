@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_d2_admin/modules/data_administration/widgets/task_progress.dart';
 
 import 'package:mobile_d2_admin/widgets/custom_material_button.dart';
 import '../../../../config/theme_config.dart';
@@ -103,21 +104,45 @@ class Resource extends StatelessWidget {
                   color: AppColors.surfaceColor),
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: StreamBuilder<Map<String, dynamic>>(
+                child: StreamBuilder<List<dynamic>>(
                     stream: DataAdministrationApi.generateTables({}),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        // return ProcessStatus(
-                        //   imagePath: AssetsPath.complete,
-                        //   processStatus: 'Successful',
-                        //   process: 'maintenance was performed successful',
-                        //   size: size,
-                        //   onPressed: () {
-                        //     Navigator.pop(context);
-                        //   },
-                        // );
-
-                        return Text(snapshot.data.toString());
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: size.height * 0.2,
+                              child: ListView.separated(
+                                  primary: false,
+                                  itemCount: snapshot.data!.length,
+                                  separatorBuilder: (context, index) {
+                                    return const SizedBox(
+                                      height: 16,
+                                    );
+                                  },
+                                  itemBuilder: (context, index) {
+                                    final progresses = snapshot.data;
+                                    return TaskProgress(
+                                      time: progresses![index]['time'],
+                                      message: progresses[index]['message'],
+                                    );
+                                  }),
+                            ),
+                            if (!snapshot.data![0]['completed'])
+                              const CircularProgressIndicator(
+                                color: AppColors.primaryColor,
+                              ),
+                            if (snapshot.data![0]['completed'])
+                              CustomMaterialButton(
+                                size: size,
+                                label: 'Ok',
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                          ],
+                        );
                       } else if (snapshot.hasError) {
                         return ProcessStatus(
                           imagePath: AssetsPath.error,

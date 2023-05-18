@@ -35,8 +35,8 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    usernameController.text = "admin";
-    passwordController.text = "district";
+    usernameController.text = "mohuser";
+    passwordController.text = "Dhis@2021";
     urlController.text = widget.instanceUrl;
     super.initState();
   }
